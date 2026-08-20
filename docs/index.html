@@ -19,8 +19,9 @@
   }
   *{box-sizing:border-box}
   html{scroll-behavior:smooth}
+  html{background:var(--bg)}
   body{
-    margin:0; background:var(--bg); color:var(--ink);
+    margin:0; background:transparent; color:var(--ink);
     font-family:var(--serif); font-size:19px; line-height:1.7;
     -webkit-font-smoothing:antialiased;
   }
@@ -34,13 +35,15 @@
   .dim{color:var(--ink-dim)}
   .faint{color:var(--ink-faint)}
 
-  /* Starfield hero */
+  /* Full-page starfield, fixed behind all content */
+  .stars{position:fixed; inset:0; width:100%; height:100%; pointer-events:none; opacity:.5; z-index:0}
+  body > *{position:relative; z-index:1}
+
   header.hero{
     position:relative; overflow:hidden;
-    background:radial-gradient(1200px 500px at 50% -10%, #201d2b 0%, var(--bg) 60%);
+    background:radial-gradient(1200px 560px at 50% -12%, rgba(40,35,58,.9) 0%, rgba(15,14,19,0) 62%);
     border-bottom:1px solid var(--line);
   }
-  .stars{position:absolute; inset:0; pointer-events:none; opacity:.55}
   .hero-inner{position:relative; text-align:center; padding:96px 28px 84px}
   .mark{font-family:var(--display); font-size:15px; letter-spacing:.4em; text-transform:uppercase; color:var(--gold); margin-bottom:26px}
   header.hero h1{font-size:64px; margin:0; color:var(--ink)}
@@ -113,6 +116,39 @@
   .sources{columns:2; column-gap:40px; font-size:16px; color:var(--ink-dim); margin-top:16px}
   .sources li{margin-bottom:10px; break-inside:avoid}
 
+  /* Order form */
+  .oform{margin-top:30px; background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:30px 30px 26px}
+  .orow{display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:20px}
+  .oform label{display:flex; flex-direction:column; gap:8px; font-size:14px; letter-spacing:.06em; text-transform:uppercase; color:var(--gold)}
+  .oform input[type=text],.oform input[type=date],.oform input[type=time],.oform select{
+    font-family:var(--serif); font-size:18px; text-transform:none; letter-spacing:normal;
+    color:var(--ink); background:#0c0b11; border:1px solid var(--line); border-radius:9px;
+    padding:12px 14px; width:100%; outline:none;
+  }
+  .oform input:focus,.oform select:focus{border-color:var(--gold-soft)}
+  .oform input::placeholder{color:#5f5949}
+  /* Dark-friendly native pickers */
+  .oform input[type=date],.oform input[type=time]{color-scheme:dark}
+  .oform select{appearance:none; background-image:linear-gradient(45deg,transparent 50%,var(--gold) 50%),linear-gradient(135deg,var(--gold) 50%,transparent 50%); background-position:calc(100% - 20px) center,calc(100% - 14px) center; background-size:6px 6px,6px 6px; background-repeat:no-repeat; padding-right:40px}
+  .timefield{position:relative}
+  .checkline{display:flex; align-items:center; gap:8px; margin-top:8px; text-transform:none; letter-spacing:normal; font-size:14px; color:var(--ink-dim)}
+  .checkline label{flex-direction:row; text-transform:none; letter-spacing:normal; color:var(--ink-dim); font-size:14px}
+  fieldset.tone{border:1px solid var(--line); border-radius:9px; padding:14px 16px; display:flex; gap:22px; flex-wrap:wrap; align-items:center}
+  fieldset.tone legend{font-size:14px; letter-spacing:.06em; text-transform:uppercase; color:var(--gold); padding:0 8px}
+  fieldset.tone span{display:flex; align-items:center; gap:8px; color:var(--ink-dim); font-size:17px}
+  .oform input[type=radio],.oform input[type=checkbox]{accent-color:var(--gold); width:17px; height:17px}
+  .oactions{display:flex; align-items:center; gap:18px; margin-top:6px; flex-wrap:wrap}
+  .oform button{font-family:var(--display); font-size:19px; letter-spacing:.02em; color:#12100a; background:var(--gold); border:none; border-radius:10px; padding:13px 30px; cursor:pointer; transition:filter .15s}
+  .oform button:hover{filter:brightness(1.08)}
+  .ohint{font-size:14px}
+  .oform label.invalid input,.oform label.invalid select,fieldset.tone.invalid{border-color:#b4553f}
+  .osummary{margin-top:24px; border:1px solid var(--gold-soft); border-radius:12px; padding:22px 24px; background:#14131a}
+  .osummary h3{margin:0 0 12px; font-size:21px}
+  .osummary .sky{font-family:var(--display); font-size:22px; color:var(--gold); margin:2px 0 14px}
+  .osummary dl{display:grid; grid-template-columns:150px 1fr; gap:8px 16px; margin:0; font-size:17px}
+  .osummary dt{color:var(--ink-faint); text-transform:uppercase; letter-spacing:.06em; font-size:13px; padding-top:3px}
+  .osummary dd{margin:0; color:var(--ink)}
+
   footer{padding:56px 0 80px; text-align:center; color:var(--ink-faint); font-size:15px}
   footer .rule-star{margin-bottom:26px}
 
@@ -122,6 +158,9 @@
     .field .k{border-right:none; border-bottom:1px solid var(--line)}
     header.hero h1{font-size:44px}
     .gallery,.sources{grid-template-columns:1fr; columns:1}
+    .orow{grid-template-columns:1fr}
+    .osummary dl{grid-template-columns:1fr}
+    .osummary dt{padding-top:10px}
   }
 </style>
 </head>
@@ -131,7 +170,7 @@
   <canvas class="stars" id="stars"></canvas>
   <div class="hero-inner">
     <div class="mark">Almanac Stone</div>
-    <h1>How The Oracle Works</h1>
+    <h1>How The Stone Works</h1>
     <p class="lede">Each morning your almanac shows a single reading, drawn from the true position of the sky and the meaning tradition has long assigned to it. No guessing. Precise astronomy, a codified craft.</p>
     <div class="rule-star">✶</div>
   </div>
@@ -315,6 +354,77 @@ strength   = (6.0 - orb) * weight(transit_planet) * weight(natal_planet)
   </div>
 </section>
 
+<section id="order-form">
+  <div class="wrap">
+    <p class="eyebrow">Order</p>
+    <h2>Cast your Stone</h2>
+    <p class="lead">Give us the moment and place you began, and the stone you feel drawn to. We cast your chart once and engrave it into your almanac.</p>
+
+    <form id="orderForm" class="oform" novalidate>
+      <div class="orow">
+        <label>Your name
+          <input type="text" name="name" autocomplete="name" placeholder="e.g. Iris" required>
+        </label>
+        <label>Stone
+          <select name="stone" required>
+            <option value="" disabled selected>Choose a stone…</option>
+            <option value="amethyst">Amethyst · calm and clear thinking</option>
+            <option value="rose quartz">Rose quartz · gentleness</option>
+            <option value="citrine">Citrine · warmth and quiet confidence</option>
+            <option value="obsidian">Obsidian · grounding and honest reflection</option>
+            <option value="moonstone">Moonstone · intuition and new beginnings</option>
+            <option value="clear quartz">Clear quartz · focus and fresh starts</option>
+            <option value="tigers eye">Tiger's eye · steadiness and courage</option>
+            <option value="jade">Jade · balance and patience</option>
+            <option value="carnelian">Carnelian · motivation and warmth</option>
+            <option value="lapis lazuli">Lapis lazuli · truth and clear speech</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="orow">
+        <label>Birth date
+          <input type="date" name="birthdate" required>
+        </label>
+        <label class="timefield">Birth time
+          <input type="time" name="birthtime">
+          <span class="checkline"><input type="checkbox" name="timeunknown" id="timeunknown"><label for="timeunknown">Time unknown</label></span>
+        </label>
+      </div>
+
+      <div class="orow">
+        <label>Birth place
+          <input type="text" name="birthplace" autocomplete="off" placeholder="City, Country — e.g. Oslo, Norway" required>
+        </label>
+        <label>Language
+          <select name="language">
+            <option value="en" selected>English</option>
+            <option value="fr">Français</option>
+            <option value="es">Español</option>
+            <option value="de">Deutsch</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="orow">
+        <fieldset class="tone">
+          <legend>Tone of the reading</legend>
+          <span><input type="radio" name="tone" value="reflective" id="t1" checked><label for="t1">Reflective</label></span>
+          <span><input type="radio" name="tone" value="reassuring" id="t2"><label for="t2">Reassuring</label></span>
+          <span><input type="radio" name="tone" value="encouraging" id="t3"><label for="t3">Encouraging</label></span>
+        </fieldset>
+      </div>
+
+      <div class="oactions">
+        <button type="submit">Cast my chart</button>
+        <span class="ohint faint">A demo form. Nothing is sent yet.</span>
+      </div>
+
+      <div id="orderSummary" class="osummary" hidden></div>
+    </form>
+  </div>
+</section>
+
 <footer>
   <div class="wrap">
     <div class="rule-star">✶</div>
@@ -355,6 +465,77 @@ strength   = (6.0 - orb) * weight(transit_planet) * weight(natal_planet)
   }
   window.addEventListener('resize',resize);
   resize(); if(reduce){draw(0);} else {requestAnimationFrame(draw);}
+})();
+
+// Order form: validation, "time unknown" toggle, confirmation summary.
+(function(){
+  var form=document.getElementById('orderForm'); if(!form) return;
+  var tu=form.querySelector('#timeunknown');
+  var timeInput=form.querySelector('input[name=birthtime]');
+
+  tu.addEventListener('change',function(){
+    timeInput.disabled=tu.checked;
+    if(tu.checked){ timeInput.value=''; timeInput.closest('label').classList.remove('invalid'); }
+  });
+
+  // Tropical sun sign from month/day (matches the engine's ranges).
+  function sunSign(m,d){
+    var r=[[1,20,'Capricorn'],[2,19,'Aquarius'],[3,21,'Pisces'],[4,20,'Aries'],
+           [5,21,'Taurus'],[6,21,'Gemini'],[7,23,'Cancer'],[8,23,'Leo'],
+           [9,23,'Virgo'],[10,23,'Libra'],[11,22,'Scorpio'],[12,22,'Sagittarius']];
+    // r[i]: sign begins after (month, day). Walk to find current sign.
+    var names=['Capricorn','Aquarius','Pisces','Aries','Taurus','Gemini','Cancer',
+               'Leo','Virgo','Libra','Scorpio','Sagittarius','Capricorn'];
+    for(var i=0;i<r.length;i++){
+      if(m===r[i][0] && d<r[i][1]) return names[i];       // before this month's cusp
+      if(m===r[i][0] && d>=r[i][1]) return names[i+1];     // on/after cusp
+    }
+    return 'Capricorn';
+  }
+
+  function esc(s){ return (s||'').replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+
+  form.addEventListener('submit',function(e){
+    e.preventDefault();
+    var ok=true;
+    function check(sel){
+      var el=form.querySelector(sel), lab=el.closest('label')||el.closest('fieldset');
+      var bad=!el.value;
+      if(lab) lab.classList.toggle('invalid',bad);
+      if(bad) ok=false;
+    }
+    check('input[name=name]');
+    check('select[name=stone]');
+    check('input[name=birthdate]');
+    check('input[name=birthplace]');
+    if(!tu.checked) check('input[name=birthtime]');
+    if(!ok) return;
+
+    var data=Object.fromEntries(new FormData(form).entries());
+    var d=new Date(data.birthdate+'T00:00:00');
+    var sign = isNaN(d) ? '' : sunSign(d.getMonth()+1, d.getDate());
+    var months=['January','February','March','April','May','June','July',
+                'August','September','October','November','December'];
+    var dateStr = isNaN(d) ? data.birthdate : (d.getDate()+' '+months[d.getMonth()]+' '+d.getFullYear());
+    var timeStr = tu.checked ? 'Unknown (noon chart, no houses)' : (data.birthtime||'—');
+    var stoneName = form.querySelector('select[name=stone] option:checked').textContent.split(' · ')[0];
+
+    var sum=document.getElementById('orderSummary');
+    sum.innerHTML =
+      '<h3>Your Stone is ready to cast, '+esc(data.name)+'.</h3>'+
+      (sign? '<div class="sky">Sun in '+sign+'</div>' : '')+
+      '<dl>'+
+      '<dt>Born</dt><dd>'+esc(dateStr)+'</dd>'+
+      '<dt>Time</dt><dd>'+esc(timeStr)+'</dd>'+
+      '<dt>Place</dt><dd>'+esc(data.birthplace)+'</dd>'+
+      '<dt>Stone</dt><dd>'+esc(stoneName)+'</dd>'+
+      '<dt>Tone</dt><dd>'+esc(data.tone)+'</dd>'+
+      '<dt>Language</dt><dd>'+esc(({en:'English',fr:'Français',es:'Español',de:'Deutsch'})[data.language]||data.language)+'</dd>'+
+      '</dl>'+
+      '<p class="faint" style="margin-top:16px">This is a preview. From these details we cast your full natal chart and each day’s transits to it.</p>';
+    sum.hidden=false;
+    sum.scrollIntoView({behavior:'smooth',block:'nearest'});
+  });
 })();
 </script>
 </body>
