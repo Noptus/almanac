@@ -1,0 +1,23 @@
+# Build artifacts
+oracle_cpp
+*.o
+*.obj
+*.exe
+
+# Generated previews (regenerate with firmware/build_desktop.sh)
+*.bmp
+reading.bmp
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+.venv/
+venv/
+
+# OS / editor
+.DS_Store
+*.swp
+.idea/
+.vscode/
