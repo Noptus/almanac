@@ -18,6 +18,23 @@ stbtt_fontinfo* face_info(Face face) {
   return face == Face::SerifSemiBold ? &g_semibold : &g_regular;
 }
 
+// Minimal UTF-8 decoder. Advances *p past one codepoint and returns it.
+// Handles 1-3 byte sequences (enough for our ASCII + a few punctuation marks
+// like U+00B7 middot, U+2013 en dash). Invalid bytes fall back to the byte.
+unsigned int utf8_next(const unsigned char** p) {
+  unsigned int c = **p;
+  if (c < 0x80) { (*p) += 1; return c; }
+  if ((c >> 5) == 0x6) {  // 110xxxxx 10xxxxxx
+    unsigned int cp = ((c & 0x1F) << 6) | ((*p)[1] & 0x3F);
+    (*p) += 2; return cp;
+  }
+  if ((c >> 4) == 0xE) {  // 1110xxxx 10xxxxxx 10xxxxxx
+    unsigned int cp = ((c & 0x0F) << 12) | (((*p)[1] & 0x3F) << 6) | ((*p)[2] & 0x3F);
+    (*p) += 3; return cp;
+  }
+  (*p) += 1; return c;  // fallback
+}
+
 // 8x8 Bayer ordered-dither threshold matrix, normalised to 1..64.
 const int kBayer8[8][8] = {
     { 0, 48, 12, 60,  3, 51, 15, 63},
@@ -54,9 +71,11 @@ int ttf_width(const char* s, Face face, int px) {
   stbtt_fontinfo* fi = face_info(face);
   float scale = stbtt_ScaleForPixelHeight(fi, (float)px);
   float x = 0.0f;
-  for (const unsigned char* p = (const unsigned char*)s; *p; ++p) {
+  const unsigned char* p = (const unsigned char*)s;
+  while (*p) {
+    unsigned int cp = utf8_next(&p);
     int adv, lsb;
-    stbtt_GetCodepointHMetrics(fi, *p, &adv, &lsb);
+    stbtt_GetCodepointHMetrics(fi, (int)cp, &adv, &lsb);
     x += adv * scale;
   }
   return (int)(x + 0.5f);
@@ -114,8 +133,10 @@ int ttf_draw(Frame* f, int x, int y, const char* s, Face face, int px,
 
   bool dither = px > kDitherMinPx;
   float pen = (float)x;
-  for (const unsigned char* p = (const unsigned char*)s; *p; ++p) {
-    pen = draw_glyph(f, pen, y, *p, fi, scale, ascent_px, black, dither);
+  const unsigned char* p = (const unsigned char*)s;
+  while (*p) {
+    unsigned int cp = utf8_next(&p);
+    pen = draw_glyph(f, pen, y, (int)cp, fi, scale, ascent_px, black, dither);
   }
   return (int)(pen + 0.5f);
 }
@@ -146,13 +167,17 @@ int ttf_draw_wrapped(Frame* f, int x, int y, int box_w, const char* s,
     const char* end = word;
     while (*end && *end != ' ') ++end;
 
-    // Measure this word.
+    // Measure this word (UTF-8 aware).
     float wpx = 0.0f;
-    for (const unsigned char* p = (const unsigned char*)word;
-         p < (const unsigned char*)end; ++p) {
-      int adv, lsb;
-      stbtt_GetCodepointHMetrics(fi, *p, &adv, &lsb);
-      wpx += adv * scale;
+    {
+      const unsigned char* p = (const unsigned char*)word;
+      const unsigned char* e = (const unsigned char*)end;
+      while (p < e) {
+        unsigned int cp = utf8_next(&p);
+        int adv, lsb;
+        stbtt_GetCodepointHMetrics(fi, (int)cp, &adv, &lsb);
+        wpx += adv * scale;
+      }
     }
 
     // Wrap if needed (not at line start).
@@ -161,10 +186,14 @@ int ttf_draw_wrapped(Frame* f, int x, int y, int box_w, const char* s,
       pen = (float)x;
     }
 
-    // Draw the word.
-    for (const unsigned char* p = (const unsigned char*)word;
-         p < (const unsigned char*)end; ++p) {
-      pen = draw_glyph(f, pen, cy, *p, fi, scale, ascent_px, black, dither);
+    // Draw the word (UTF-8 aware).
+    {
+      const unsigned char* p = (const unsigned char*)word;
+      const unsigned char* e = (const unsigned char*)end;
+      while (p < e) {
+        unsigned int cp = utf8_next(&p);
+        pen = draw_glyph(f, pen, cy, (int)cp, fi, scale, ascent_px, black, dither);
+      }
     }
 
     // Space.

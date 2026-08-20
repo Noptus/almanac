@@ -61,14 +61,16 @@ script does this automatically) so the two platforms can't drift.
 - **Date**: read from a DS3231 RTC (or NTP once, then RTC). No `<chrono>` in the
   core keeps it portable and test-deterministic.
 
-## Layout (5 × 1)
+## Layout
+
+Spare and vision-matched — no borders, no dividers. A left-aligned stack on
+white:
 
 ```
-┌───────────────────────────── header: title · date · place ─────────────────┐
-│ MOON        │            TODAY  (message, wide reading area)   │  SKY        │
-│ ◐ icon      │  word-wrapped message spanning columns 2–4       │  planet     │
-│ phase       │                                                  │  season     │
-│ % lit       │                                                  │  sun sign   │
-│ moon sign   │                                                  │  crystal    │
-└─── col 1 ───┴──────────────── cols 2–4 ───────────────────────┴─── col 5 ──┘
+   20 August                              ← date, large serif
+   Moon in Sagittarius · Saturn retrograde ← moon + planet, one quiet line
+
+   Half-lit and climbing: the moon is at    ← the phrase, generous serif,
+   the point where effort meets resistance,   word-wrapped
+   Sam. …
 ```

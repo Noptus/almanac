@@ -128,187 +128,59 @@ int draw_wrapped(Frame* f, int x, int y, int box_w, const char* s, int scale,
 }
 
 // ------------------------- Icons (drawn, not font) --------------------
-namespace {
-// A simple moon disc with a shadow terminator, sized to `r` radius at (cx,cy).
-// `illum` 0..1 controls how much of the disc is lit (white) vs dark (black).
-// We draw the dark part filled black over a black-outlined white disc.
-void draw_moon_icon(Frame* f, int cx, int cy, int r, double illum,
-                    bool waxing) {
-  // Outline circle.
-  for (int yy = -r; yy <= r; ++yy) {
-    for (int xx = -r; xx <= r; ++xx) {
-      int d2 = xx * xx + yy * yy;
-      if (d2 <= r * r) {
-        bool dark;
-        // Terminator: a vertical-ish split scaled by illumination.
-        // frac in [-1,1]; boundary x = r*(1-2*illum).
-        double bx = r * (1.0 - 2.0 * illum);
-        if (waxing) {
-          dark = (xx < bx);   // lit on the right
-        } else {
-          dark = (xx > -bx);  // lit on the left
-        }
-        // Draw dark pixels black; lit pixels white but keep a thin outline.
-        if (dark) frame_set(f, cx + xx, cy + yy, true);
-      }
-    }
-  }
-  // Thin outline so the lit half is visible against white.
-  const int STEPS = 720;
-  for (int i = 0; i < STEPS; ++i) {
-    double a = (6.28318530718 * i) / STEPS;
-    int px = cx + (int)(r * __builtin_cos(a));
-    int py = cy + (int)(r * __builtin_sin(a));
-    frame_set(f, px, py, true);
-  }
-}
-
-bool phase_is_waxing(MoonPhase p) {
-  switch (p) {
-    case MoonPhase::New:
-    case MoonPhase::WaxingCrescent:
-    case MoonPhase::FirstQuarter:
-    case MoonPhase::WaxingGibbous:
-    case MoonPhase::Full:
-      return true;
-    default:
-      return false;
-  }
-}
-}  // namespace
-
 // ------------------------- The Oracle layout --------------------------
-// 5 columns across 1360 px. We use column boundaries as guides but let the
-// message span the wide middle for readability.
+// Clean, vision-style panel: no borders, no dividers. Left-aligned stack of
+//   DATE  (large serif)
+//   MOON + PLANET  (one quiet subtitle line)
+//   PHRASE  (the message, generous serif)
+// `name` (woven into the phrase already), `place`, `crystal`, `crystal_note`
+// are accepted for API stability but intentionally not drawn -- the panel
+// stays spare, matching the product render.
 void render_oracle(Frame* f, const SkyState& st, const char* message,
                    const char* name, const char* place, const char* crystal,
                    const char* crystal_note) {
+  (void)name; (void)place; (void)crystal; (void)crystal_note;
   frame_clear(f, /*black=*/false);
 
-  const int W = f->w, H = f->h;
-  const int col_w = W / kCols;  // 272
-
+  const int W = f->w;
   text_init();
 
-  // Type sizes (px). Tuned for the 1360x480 panel and EB Garamond metrics.
-  const int kTitlePx   = 46;
-  const int kDatePx    = 22;
-  const int kLabelPx   = 24;
-  const int kMoonPx     = 24;
-  const int kMessagePx = 34;
-  const int kSkyPx     = 23;
-  const int kNotePx    = 18;
+  // Type sizes (px), tuned for the 1360x480 panel + EB Garamond metrics.
+  const int kDatePx     = 68;   // "20 August"
+  const int kSubtitlePx = 27;   // "Moon in Gemini . Jupiter retrograde"
+  const int kPhrasePx   = 40;   // the message
 
-  // ---- Outer border + header band ----
-  frame_rect(f, 4, 4, W - 8, H - 8, true);
-  const int header_h = 84;
-  frame_hline(f, 4, W - 5, header_h, true);
+  const int margin_x = 96;      // left margin
+  const int box_w = W - 2 * margin_x;
 
-  // Header: title + date + place, in the serif.
-  char header[160];
-  if (name && *name)
-    std::snprintf(header, sizeof(header), "The Oracle  -  for %s", name);
-  else
-    std::snprintf(header, sizeof(header), "The Oracle");
-  ttf_draw(f, 26, 18, header, Face::SerifSemiBold, kTitlePx, true);
-
+  // ---- DATE ----
   static const char* kMon[] = {"January","February","March","April","May","June",
                                "July","August","September","October","November","December"};
-  char dateline[96];
   const char* mon = (st.target.month >= 1 && st.target.month <= 12)
                         ? kMon[st.target.month - 1] : "";
-  if (place && *place)
-    std::snprintf(dateline, sizeof(dateline), "%d %s %d  -  %s",
-                  st.target.day, mon, st.target.year, place);
-  else
-    std::snprintf(dateline, sizeof(dateline), "%d %s %d",
-                  st.target.day, mon, st.target.year);
-  int dw = ttf_width(dateline, Face::Serif, kDatePx);
-  ttf_draw(f, W - 26 - dw, 40, dateline, Face::Serif, kDatePx, true);
+  char dateline[48];
+  std::snprintf(dateline, sizeof(dateline), "%d %s", st.target.day, mon);
 
-  int body_top = header_h + 20;
+  int y = 70;
+  ttf_draw(f, margin_x, y, dateline, Face::SerifSemiBold, kDatePx, true);
+  y += ttf_line_height(Face::SerifSemiBold, kDatePx);
 
-  // ---- Column 1: MOON panel ----
-  int c1x = 20;
-  ttf_draw(f, c1x, body_top, "Moon", Face::SerifSemiBold, kLabelPx, true);
+  // ---- MOON + PLANET subtitle ----
+  // e.g. "Moon in Sagittarius . Saturn retrograde" (middot as separator).
+  char subtitle[128];
+  std::snprintf(subtitle, sizeof(subtitle), "Moon in %s \xC2\xB7 %s %s",
+                st.moon_sign, planet_label(st.planet.planet),
+                st.planet.retrograde ? "retrograde" : "direct");
+  y += 10;
+  ttf_draw(f, margin_x, y, subtitle, Face::Serif, kSubtitlePx, true);
+  y += ttf_line_height(Face::Serif, kSubtitlePx);
 
-  int icon_cx = c1x + 74, icon_cy = body_top + 104, icon_r = 52;
-  draw_moon_icon(f, icon_cx, icon_cy, icon_r, st.moon.illumination,
-                 phase_is_waxing(st.moon.phase));
-
-  char l1[64], l2[64], l3[64];
-  std::snprintf(l1, sizeof(l1), "%s", moon_phase_label(st.moon.phase));
-  std::snprintf(l2, sizeof(l2), "%d%% illuminated",
-                (int)(st.moon.illumination * 100 + 0.5));
-  std::snprintf(l3, sizeof(l3), "in %s", st.moon_sign);
-  int ty = icon_cy + icon_r + 22;
-  ty = ttf_draw_wrapped(f, c1x, ty, col_w - 30, l1, Face::SerifSemiBold, kMoonPx, 2, true);
-  ty = ttf_draw_wrapped(f, c1x, ty + 4, col_w - 30, l2, Face::Serif, kMoonPx, 2, true);
-  ttf_draw(f, c1x, ty + 4, l3, Face::Serif, kMoonPx, true);
-
-  // Column divider after col 1.
-  frame_vline(f, col_w, header_h + 10, H - 14, true);
-
-  // ---- Columns 2-4: the MESSAGE (wide reading area) ----
-  int msg_x = col_w + 28;
-  int msg_w = col_w * 3 - 48;  // spans columns 2,3,4
-  int msg_y = body_top;
-  ttf_draw(f, msg_x, msg_y, "Today", Face::SerifSemiBold, kLabelPx, true);
+  // ---- PHRASE ----
   char pretty_msg[1024];
   prettify_dashes(message, pretty_msg, sizeof(pretty_msg));
-  ttf_draw_wrapped(f, msg_x, msg_y + 46, msg_w, pretty_msg, Face::Serif,
-                   kMessagePx, 12, true);
-
-  // Column divider before col 5.
-  frame_vline(f, col_w * 4, header_h + 10, H - 14, true);
-
-  // ---- Column 5: SKY facts + crystal ----
-  int c5x = col_w * 4 + 20;
-  int c5w = col_w - 34;
-  int sy = body_top;
-  ttf_draw(f, c5x, sy, "Sky", Face::SerifSemiBold, kLabelPx, true);
-  sy += 44;
-
-  char pf[80];
-  std::snprintf(pf, sizeof(pf), "%s %s", planet_label(st.planet.planet),
-                st.planet.retrograde ? "retrograde" : "direct");
-  sy = ttf_draw_wrapped(f, c5x, sy, c5w, pf, Face::Serif, kSkyPx, 3, true);
-  sy += 4;
-
-  if (st.season.kind != SeasonKind::Ordinary) {
-    char season_pretty[48];
-    std::snprintf(season_pretty, sizeof(season_pretty), "%s", st.season.name);
-    for (char* p = season_pretty; *p; ++p) {
-      if (*p == '_') *p = ' ';
-      if (p == season_pretty || p[-1] == ' ')
-        if (*p >= 'a' && *p <= 'z') *p = (char)(*p - 'a' + 'A');
-    }
-    sy = ttf_draw_wrapped(f, c5x, sy, c5w, season_pretty, Face::Serif, kSkyPx, 3, true);
-    sy += 4;
-  }
-
-  if (st.sun_sign) {
-    char sun[48];
-    std::snprintf(sun, sizeof(sun), "Sun in %s", st.sun_sign);
-    sy = ttf_draw_wrapped(f, c5x, sy, c5w, sun, Face::Serif, kSkyPx, 3, true);
-    sy += 12;
-  }
-
-  if (crystal && *crystal) {
-    sy += 8;
-    frame_hline(f, c5x, c5x + c5w, sy, true);
-    sy += 16;
-    char cz[48];
-    std::snprintf(cz, sizeof(cz), "%s", crystal);
-    if (cz[0] >= 'a' && cz[0] <= 'z') cz[0] = (char)(cz[0] - 'a' + 'A');
-    sy = ttf_draw_wrapped(f, c5x, sy, c5w, cz, Face::SerifSemiBold, kSkyPx, 3, true);
-    if (crystal_note && *crystal_note) {
-      sy += 6;
-      char note[96];
-      prettify_dashes(crystal_note, note, sizeof(note));
-      ttf_draw_wrapped(f, c5x, sy, c5w, note, Face::Serif, kNotePx, 3, true);
-    }
-  }
+  y += 48;  // breathing room before the phrase
+  ttf_draw_wrapped(f, margin_x, y, box_w, pretty_msg, Face::Serif,
+                   kPhrasePx, 16, true);
 }
 
 // ------------------------- BMP export ---------------------------------
