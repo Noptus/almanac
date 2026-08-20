@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Oracle — How It Works</title>
+<meta name="description" content="Almanac &amp; Stone — how each daily reading is computed from real ephemeris data and generated from a codified astrological tradition. No AI: pure math and correspondence.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Cormorant+Garamond:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#f4efe6; --ink-dim:#b9b2a3; --ink-faint:#877f6f;
+    --bg:#0f0e13; --bg2:#15141b; --panel:#1b1a22; --line:#2c2a35;
+    --gold:#caa64a; --gold-soft:#8a7433;
+    --serif:'EB Garamond',Georgia,serif;
+    --display:'Cormorant Garamond','EB Garamond',Georgia,serif;
+    --maxw:1080px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:var(--serif); font-size:19px; line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--gold); text-decoration:none}
+  a:hover{text-decoration:underline}
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 28px}
+  h1,h2,h3{font-family:var(--display); font-weight:600; line-height:1.15; letter-spacing:.01em}
+  h2{font-size:34px; margin:0 0 6px}
+  h3{font-size:23px; margin:34px 0 8px; color:var(--ink)}
+  .eyebrow{font-family:var(--serif); font-size:13px; letter-spacing:.28em; text-transform:uppercase; color:var(--gold); margin:0 0 14px}
+  .dim{color:var(--ink-dim)}
+  .faint{color:var(--ink-faint)}
+
+  /* Starfield hero */
+  header.hero{
+    position:relative; overflow:hidden;
+    background:radial-gradient(1200px 500px at 50% -10%, #201d2b 0%, var(--bg) 60%);
+    border-bottom:1px solid var(--line);
+  }
+  .stars{position:absolute; inset:0; pointer-events:none; opacity:.55}
+  .hero-inner{position:relative; text-align:center; padding:96px 28px 84px}
+  .mark{font-family:var(--display); font-size:15px; letter-spacing:.4em; text-transform:uppercase; color:var(--gold); margin-bottom:26px}
+  header.hero h1{font-size:64px; margin:0; color:var(--ink)}
+  header.hero p.lede{max-width:640px; margin:20px auto 0; font-size:21px; color:var(--ink-dim)}
+  .rule-star{display:flex; align-items:center; justify-content:center; gap:16px; margin:34px 0 0; color:var(--gold-soft)}
+  .rule-star::before,.rule-star::after{content:""; height:1px; width:120px; background:linear-gradient(90deg,transparent,var(--gold-soft))}
+  .rule-star::after{background:linear-gradient(90deg,var(--gold-soft),transparent)}
+
+  section{padding:64px 0; border-bottom:1px solid var(--line)}
+  section:last-of-type{border-bottom:none}
+
+  .lead{font-size:21px; color:var(--ink-dim); max-width:760px}
+
+  /* Step cards */
+  .steps{display:grid; grid-template-columns:repeat(3,1fr); gap:20px; margin-top:36px}
+  .card{background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:26px 24px}
+  .card .num{font-family:var(--display); font-size:15px; letter-spacing:.2em; color:var(--gold); text-transform:uppercase}
+  .card h3{margin:10px 0 8px; font-size:22px}
+  .card p{margin:0; font-size:17px; color:var(--ink-dim)}
+
+  /* Order fields table */
+  .fields{margin-top:28px; border:1px solid var(--line); border-radius:14px; overflow:hidden}
+  .field{display:grid; grid-template-columns:210px 1fr; gap:0; border-bottom:1px solid var(--line)}
+  .field:last-child{border-bottom:none}
+  .field .k{padding:16px 22px; background:var(--bg2); font-weight:500; border-right:1px solid var(--line)}
+  .field .v{padding:16px 22px; color:var(--ink-dim); font-size:17px}
+  .req{font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:var(--gold); margin-left:8px}
+  .opt{font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-faint); margin-left:8px}
+
+  /* Pipeline */
+  .pipe{display:grid; grid-template-columns:1fr; gap:14px; margin-top:30px}
+  .pstep{display:grid; grid-template-columns:56px 1fr; gap:18px; align-items:start; background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:20px 22px}
+  .pstep .badge{width:44px; height:44px; border-radius:50%; border:1px solid var(--gold-soft); color:var(--gold); display:flex; align-items:center; justify-content:center; font-family:var(--display); font-size:20px}
+  .pstep h3{margin:2px 0 6px; font-size:20px}
+  .pstep p{margin:0; color:var(--ink-dim); font-size:17px}
+  .pstep code{color:var(--ink)}
+
+  code, .mono{font-family:ui-monospace,'SF Mono',Menlo,Consolas,monospace; font-size:.86em; background:#000; color:#dfd6c2; padding:2px 7px; border-radius:6px; border:1px solid var(--line)}
+  pre{background:#0a0910; border:1px solid var(--line); border-radius:12px; padding:20px 22px; overflow-x:auto; font-family:ui-monospace,'SF Mono',Menlo,Consolas,monospace; font-size:14.5px; line-height:1.6; color:#d7ccb6}
+  pre .c{color:#6f6a5d}
+  pre .g{color:var(--gold)}
+
+  /* Correspondence tables */
+  table.corr{width:100%; border-collapse:collapse; margin-top:18px; font-size:16.5px}
+  table.corr th,table.corr td{text-align:left; padding:11px 14px; border-bottom:1px solid var(--line)}
+  table.corr th{color:var(--gold); font-family:var(--serif); font-weight:500; letter-spacing:.04em; font-size:13px; text-transform:uppercase}
+  table.corr td{color:var(--ink-dim)}
+  table.corr td:first-child{color:var(--ink); font-weight:500}
+  .tablewrap{overflow-x:auto}
+
+  /* Worked example */
+  .example{background:linear-gradient(180deg,var(--panel),#141319); border:1px solid var(--line); border-radius:16px; padding:30px 30px 26px; margin-top:26px}
+  .example .chip{display:inline-block; font-size:13px; letter-spacing:.08em; color:var(--gold); border:1px solid var(--gold-soft); border-radius:999px; padding:3px 12px; margin:0 8px 8px 0}
+  .arrow{color:var(--gold); margin:14px 0; text-align:center; font-size:22px}
+  .reading{font-family:var(--serif); font-size:24px; line-height:1.55; color:var(--ink); border-left:2px solid var(--gold-soft); padding:6px 0 6px 22px; margin-top:8px}
+  .reading .date{font-family:var(--display); font-size:30px; display:block; margin-bottom:2px}
+  .reading .sub{font-size:16px; color:var(--ink-dim); display:block; margin-bottom:16px}
+
+  .callout{background:#14131a; border:1px solid var(--gold-soft); border-radius:12px; padding:18px 22px; margin-top:24px; color:var(--ink-dim); font-size:17px}
+  .callout strong{color:var(--ink)}
+
+  .gallery{display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-top:26px}
+  .gallery figure{margin:0}
+  .gallery img{width:100%; border-radius:10px; border:1px solid var(--line); background:#fff}
+  .gallery figcaption{font-size:14px; color:var(--ink-faint); margin-top:8px; text-align:center}
+
+  .sources{columns:2; column-gap:40px; font-size:16px; color:var(--ink-dim); margin-top:16px}
+  .sources li{margin-bottom:10px; break-inside:avoid}
+
+  footer{padding:56px 0 80px; text-align:center; color:var(--ink-faint); font-size:15px}
+  footer .rule-star{margin-bottom:26px}
+
+  @media (max-width:820px){
+    .steps{grid-template-columns:1fr}
+    .field{grid-template-columns:1fr}
+    .field .k{border-right:none; border-bottom:1px solid var(--line)}
+    header.hero h1{font-size:44px}
+    .gallery,.sources{grid-template-columns:1fr; columns:1}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <canvas class="stars" id="stars"></canvas>
+  <div class="hero-inner">
+    <div class="mark">Almanac &amp; Stone</div>
+    <h1>How The Oracle Works</h1>
+    <p class="lede">Every morning your almanac shows a single reading, drawn from the real position of the sky and the meaning tradition has long assigned to it. No guessing, no black box — just precise astronomy and a codified craft.</p>
+    <div class="rule-star">✶</div>
+  </div>
+</header>
+
+<section id="intro">
+  <div class="wrap">
+    <p class="eyebrow">The promise</p>
+    <h2>Computed, not conjured</h2>
+    <p class="lead">A reading is produced in three honest stages. First you tell us where and when you began. Then we compute the sky — yours at birth, and today's above it — to the precision professional astrologers use. Finally we translate those positions into words using tables of correspondence handed down through the tradition. <strong class="dim">There is no artificial intelligence in the writing.</strong> The same chart on the same day always yields the same reading — because it is derived, not invented.</p>
+
+    <div class="steps">
+      <div class="card">
+        <div class="num">Stage I</div>
+        <h3>You order</h3>
+        <p>Your name, the moment and place of your birth, and the stone you choose. This is everything needed to cast your chart — and nothing more.</p>
+      </div>
+      <div class="card">
+        <div class="num">Stage II</div>
+        <h3>We compute</h3>
+        <p>An ephemeris fixes the Sun, Moon and planets to a fraction of a degree — your natal chart, and each day's transits to it.</p>
+      </div>
+      <div class="card">
+        <div class="num">Stage III</div>
+        <h3>We translate</h3>
+        <p>Tables of correspondence turn the strongest transit of the day into language, following rules — not a random sentence generator.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="order">
+  <div class="wrap">
+    <p class="eyebrow">Stage I · Onboarding</p>
+    <h2>What you tell us when you order</h2>
+    <p class="lead">A birth chart is a photograph of the sky from one place, at one instant. To reproduce it we need the instant and the place precisely — the same details any astrologer would ask for.</p>
+
+    <div class="fields">
+      <div class="field"><div class="k">Name <span class="req">used</span></div><div class="v">For the engraving and to address the reading to you. Never leaves your device.</div></div>
+      <div class="field"><div class="k">Birth date <span class="req">required</span></div><div class="v">Fixes the Sun sign and the longitude of every planet at your birth.</div></div>
+      <div class="field"><div class="k">Birth time <span class="req">required*</span></div><div class="v">Hour and minute set your <em>Ascendant</em> (rising sign) and the house each planet falls in. If truly unknown, we cast a noon chart and omit the houses — and tell you so.</div></div>
+      <div class="field"><div class="k">Birth place <span class="req">required</span></div><div class="v">A city, geocoded to latitude, longitude and historical time zone — needed to convert your local birth time to Universal Time and to compute the Ascendant.</div></div>
+      <div class="field"><div class="k">Stone <span class="req">used</span></div><div class="v">The crystal seated in the front slot. Each has a traditional intention that colours one line of the reading.</div></div>
+      <div class="field"><div class="k">Tone &amp; language <span class="opt">optional</span></div><div class="v">Reassuring, encouraging, reflective… and the language the almanac speaks.</div></div>
+    </div>
+    <div class="callout"><strong>Why time and place matter so much.</strong> Two people born on the same day can have different rising signs and house placements depending on the hour and city of birth. Skipping time or place would reduce your reading to a generic daily horoscope — exactly what this device is built <em>not</em> to be.</div>
+  </div>
+</section>
+
+<section id="compute">
+  <div class="wrap">
+    <p class="eyebrow">Stage II · Computation</p>
+    <h2>How we fix the Moon and planets, precisely</h2>
+    <p class="lead">Positions come from an <strong>ephemeris</strong> — the same class of data (Swiss Ephemeris, derived from NASA/JPL) that professional software runs on. We precompute a table of daily positions spanning centuries and bake it into the device, so the almanac is accurate to a fraction of a degree with no connection required.</p>
+
+    <div class="pipe">
+      <div class="pstep"><div class="badge">1</div><div><h3>Local birth time → Universal Time</h3><p>Your city gives the time zone and any historical daylight saving in force on that date. We convert to UT and then to a <strong>Julian Day</strong>, the continuous day-count astronomy uses.</p></div></div>
+      <div class="pstep"><div class="badge">2</div><div><h3>Ephemeris lookup → ecliptic longitudes</h3><p>For that instant we read the geocentric ecliptic longitude of the Sun, Moon and Mercury through Pluto (plus the lunar node), interpolated between table entries. A longitude of 0–360° places each body in a sign (30° each).</p></div></div>
+      <div class="pstep"><div class="badge">3</div><div><h3>Ascendant &amp; houses</h3><p>From the local sidereal time, the obliquity of the ecliptic and your latitude we compute the <strong>Ascendant</strong> — the degree rising on the eastern horizon — and the twelve house cusps that divide your chart into life areas.</p></div></div>
+      <div class="pstep"><div class="badge">4</div><div><h3>Moon phase &amp; retrogrades</h3><p>The Sun–Moon elongation gives the phase and exact illuminated fraction. Comparing a planet's longitude across successive days tells us when it is <strong>retrograde</strong> — apparently moving backward.</p></div></div>
+      <div class="pstep"><div class="badge">5</div><div><h3>Today's transits to your chart</h3><p>Each morning we compare today's planetary longitudes to your natal ones. When the angle between them lands on a recognised <strong>aspect</strong> (0°, 60°, 90°, 120°, 180°) within a small tolerance — the <em>orb</em> — a transit is active.</p></div></div>
+      <div class="pstep"><div class="badge">6</div><div><h3>Rank the day</h3><p>Active transits are scored by tightness of orb and the weight of the planets involved. The single strongest becomes the seed of today's reading.</p></div></div>
+    </div>
+
+    <h3>What "an aspect within orb" means</h3>
+<pre><span class="c"># Longitudes in degrees. A "square" is a 90° separation.</span>
+sep        = angular_distance(transit_planet.lon, natal_planet.lon)   <span class="c"># 0–180°</span>
+target     = 90.0                                                     <span class="c"># square</span>
+orb        = abs(sep - target)
+is_active  = orb &lt;= 6.0                                               <span class="c"># within tolerance</span>
+strength   = (6.0 - orb) * weight(transit_planet) * weight(natal_planet)
+</pre>
+    <p class="faint">The numbers above are illustrative; production orbs follow the tradition (tighter for minor bodies, wider for luminaries) and are reviewed by a practitioner.</p>
+  </div>
+</section>
+
+<section id="generate">
+  <div class="wrap">
+    <p class="eyebrow">Stage III · Generation</p>
+    <h2>How we turn sky into language — with tradition, not AI</h2>
+    <p class="lead">The strongest transit is a precise astrological statement: <em>transiting Saturn square natal Moon, in your 4th house</em>. To voice it we consult <strong>tables of correspondence</strong> — the meanings the tradition assigns to each planet, sign, house and aspect — and assemble a sentence from fixed grammatical skeletons. Every word traces back to a rule and a source.</p>
+
+    <div class="tablewrap">
+    <table class="corr">
+      <thead><tr><th>Planet</th><th>Domain</th><th>Keywords</th></tr></thead>
+      <tbody>
+        <tr><td>☉ Sun</td><td>vitality, identity</td><td>purpose, confidence, warmth</td></tr>
+        <tr><td>☽ Moon</td><td>feeling, home</td><td>mood, memory, care, instinct</td></tr>
+        <tr><td>☿ Mercury</td><td>mind, exchange</td><td>speech, travel, learning, review</td></tr>
+        <tr><td>♀ Venus</td><td>love, value</td><td>harmony, beauty, worth, pleasure</td></tr>
+        <tr><td>♂ Mars</td><td>drive, action</td><td>courage, initiative, friction</td></tr>
+        <tr><td>♃ Jupiter</td><td>growth, meaning</td><td>opportunity, faith, expansion</td></tr>
+        <tr><td>♄ Saturn</td><td>structure, time</td><td>discipline, limit, endurance</td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <div class="tablewrap">
+    <table class="corr">
+      <thead><tr><th>Aspect</th><th>Angle</th><th>Nature</th><th>Tone it lends</th></tr></thead>
+      <tbody>
+        <tr><td>Conjunction</td><td>0°</td><td>fusion</td><td>intensity, beginning</td></tr>
+        <tr><td>Sextile</td><td>60°</td><td>harmonious</td><td>opportunity, ease</td></tr>
+        <tr><td>Square</td><td>90°</td><td>dynamic</td><td>friction that prompts growth</td></tr>
+        <tr><td>Trine</td><td>120°</td><td>harmonious</td><td>flow, natural talent</td></tr>
+        <tr><td>Opposition</td><td>180°</td><td>polarising</td><td>awareness through contrast</td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <div class="tablewrap">
+    <table class="corr">
+      <thead><tr><th>Stone</th><th>Traditional intention</th></tr></thead>
+      <tbody>
+        <tr><td>Amethyst</td><td>calm and clear thinking</td></tr>
+        <tr><td>Rose quartz</td><td>gentleness toward self and others</td></tr>
+        <tr><td>Citrine</td><td>warmth and quiet confidence</td></tr>
+        <tr><td>Moonstone</td><td>intuition and new beginnings</td></tr>
+        <tr><td>Obsidian</td><td>grounding and honest reflection</td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <h3>From transit to sentence</h3>
+    <div class="example">
+      <span class="chip">Transit: Saturn □ Moon</span>
+      <span class="chip">House: 4th (home)</span>
+      <span class="chip">Aspect nature: dynamic</span>
+      <span class="chip">Stone: amethyst</span>
+      <div class="arrow">↓ correspondence + template grammar ↓</div>
+      <div class="reading">
+        <span class="date">20 August</span>
+        <span class="sub">Moon in Sagittarius · Saturn retrograde</span>
+        A steadying weight settles over home and feeling today; Saturn asks your heart for patience rather than speed. Let structure be a kindness, not a cage — and keep your amethyst close for a clear, calm mind.
+      </div>
+      <p class="faint" style="margin-top:16px">The planet, house and aspect chose the <em>subject</em> and the <em>tone</em>; the correspondence tables supplied the <em>keywords</em>; a fixed sentence skeleton supplied the <em>grammar</em>; a deterministic seed chose among equivalent phrasings so no two recent days repeat. The stone line comes straight from its correspondence row.</p>
+    </div>
+
+    <div class="callout"><strong>Determinism is a feature.</strong> Because the reading is derived from your chart and the day by fixed rules, it is reproducible and auditable. Give the same birth data and date to any astrologer with the same tables and they would reach the same reading. That is what separates a computed almanac from a fortune cookie.</div>
+
+    <h3>On the two samples below</h3>
+    <div class="gallery">
+      <figure>
+        <img src="img/sample-first-quarter.png" alt="Sample reading, first quarter moon">
+        <figcaption>First quarter · Saturn retrograde</figcaption>
+      </figure>
+      <figure>
+        <img src="img/sample-winter-solstice.png" alt="Sample reading, winter solstice">
+        <figcaption>Winter solstice · Jupiter retrograde</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<section id="honesty">
+  <div class="wrap">
+    <p class="eyebrow">A word on honesty</p>
+    <h2>Reflection, not prediction</h2>
+    <p class="lead">The Oracle never claims to know the future, and never offers medical, financial or legal advice — a filter enforces this on every reading before it is shown. The astronomy is literally true; the <em>meanings</em> belong to a long human tradition of reading the sky as a mirror for reflection. We present it in that spirit: a considered, well-made prompt for the day — closer to a stoic maxim than a horoscope that pretends to foretell events.</p>
+  </div>
+</section>
+
+<section id="sources">
+  <div class="wrap">
+    <p class="eyebrow">Provenance</p>
+    <h2>Where the craft comes from</h2>
+    <p class="lead">The computation rests on published astronomy; the interpretation on named, respected sources. The correspondence tables are reviewed by a practicing astrologer before they ship.</p>
+    <ul class="sources">
+      <li><strong>Swiss Ephemeris</strong> — Astrodienst, derived from NASA/JPL DE ephemerides. Planetary positions.</li>
+      <li><strong>Jean Meeus</strong>, <em>Astronomical Algorithms</em> — phase, sidereal time, obliquity.</li>
+      <li><strong>Robert Hand</strong>, <em>Planets in Transit</em> — transit interpretation.</li>
+      <li><strong>Dane Rudhyar</strong>, <em>The Lunation Cycle</em> — moon-phase meaning.</li>
+      <li><strong>Ptolemy</strong>, <em>Tetrabiblos</em> — classical aspects &amp; dignities.</li>
+      <li><strong>Traditional crystal correspondences</strong> — stone intentions.</li>
+    </ul>
+    <p class="faint" style="margin-top:22px">The device runs fully offline. Nothing about you is transmitted; your chart is computed once, at order, and lives only on your almanac.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="rule-star">✶</div>
+    <div>The Oracle — Almanac &amp; Stone</div>
+    <div style="margin-top:8px"><a href="https://github.com/Noptus/almanac">Source &amp; method on GitHub</a></div>
+  </div>
+</footer>
+
+<script>
+// Lightweight starfield — decorative, respects reduced-motion.
+(function(){
+  var c=document.getElementById('stars'); if(!c) return;
+  var ctx=c.getContext('2d'), stars=[], w,h,
+      reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function seed(n){ // deterministic PRNG so layout is stable
+    return function(){ n=(n*1664525+1013904223)>>>0; return n/4294967296; };
+  }
+  var rnd=seed(20260820);
+  function resize(){
+    w=c.width=c.offsetWidth; h=c.height=c.offsetHeight;
+    stars=[];
+    var count=Math.floor(w*h/9000);
+    for(var i=0;i<count;i++){
+      stars.push({x:rnd()*w,y:rnd()*h,r:rnd()*1.3+0.2,base:rnd()*0.5+0.3,tw:rnd()*Math.PI*2});
+    }
+  }
+  function draw(t){
+    ctx.clearRect(0,0,w,h);
+    for(var i=0;i<stars.length;i++){
+      var s=stars[i];
+      var a=reduce? s.base : s.base + 0.35*Math.sin(t/900 + s.tw);
+      ctx.globalAlpha=Math.max(0,Math.min(1,a));
+      ctx.fillStyle= (i%13===0)? '#caa64a' : '#f4efe6';
+      ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,6.2832); ctx.fill();
+    }
+    ctx.globalAlpha=1;
+    if(!reduce) requestAnimationFrame(draw);
+  }
+  window.addEventListener('resize',resize);
+  resize(); if(reduce){draw(0);} else {requestAnimationFrame(draw);}
+})();
+</script>
+</body>
+</html>
