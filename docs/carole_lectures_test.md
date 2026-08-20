@@ -18,8 +18,7 @@ l'équinoxe de printemps.
 
 ## Lecture 1 : Léa (Soleil en Gémeaux)
 
-**Ciel du jour** · Nouvelle Lune en Bélier · Mercure rétrograde
-**Dérivation** · Nouvelle Lune = phase de commencement, d'intention (Rudhyar).
+**Dérivation** · Nouvelle Lune en Bélier = phase de commencement, d'intention (Rudhyar).
 Bélier = feu, élan, initiative. Mercure rétrograde (correspondance : *revoir,
 relire, ralentir la parole*). Ton retenu : **prudence douce**.
 Émotion-clé (taxonomie) : *Communication*.
@@ -35,9 +34,9 @@ relire, ralentir la parole*). Ton retenu : **prudence douce**.
 
 ## Lecture 2 : Camille (Soleil en Scorpion)
 
-**Ciel du jour** · Nouvelle Lune en Bélier · Mercure rétrograde
-**Dérivation** · Même ciel, mais lu pour un tempérament d'eau profonde
-(Scorpion : intensité, intériorité). Nouvelle Lune → recommencement intime.
+**Dérivation** · Même ciel (Nouvelle Lune en Bélier, Mercure rétrograde), mais lu
+pour un tempérament d'eau profonde (Scorpion : intensité, intériorité).
+Nouvelle Lune → recommencement intime.
 Ton : **réconfort**. Émotion-clé : *Reconnexion*.
 
 > **20 mars**
@@ -51,8 +50,8 @@ Ton : **réconfort**. Émotion-clé : *Reconnexion*.
 
 ## Lecture 3 : Chloé (Soleil en Verseau) *(avec transit natal, méthode cible)*
 
-**Ciel du jour** · Saturne transitant carré à la Lune natale, en Maison IV
-**Dérivation** · Saturne (correspondance : *structure, patience, limite*) ·
+**Dérivation** · Saturne transitant carré à la Lune natale, en Maison IV.
+Saturne (correspondance : *structure, patience, limite*) ·
 carré = aspect dynamique (*friction qui fait grandir*) · Lune natale (*le cœur,
 le foyer, le ressenti*) · Maison IV (*la maison, les racines*). Ton :
 **réflexion**. Émotion-clé : *Ancrage*.
@@ -69,8 +68,8 @@ le foyer, le ressenti*) · Maison IV (*la maison, les racines*). Ton :
 
 ## Lecture 4 : Manon (Soleil en Lion) *(avec transit natal, méthode cible)*
 
-**Ciel du jour** · Vénus transitant trigone au Soleil natal, en Maison V
-**Dérivation** · Vénus (*amour, valeur, beauté, plaisir*) · trigone = aspect
+**Dérivation** · Vénus transitant trigone au Soleil natal, en Maison V.
+Vénus (*amour, valeur, beauté, plaisir*) · trigone = aspect
 harmonieux (*fluidité, aisance*) · Soleil natal (*l'identité, la vitalité*) ·
 Maison V (*créativité, joie, ce qui nous fait vibrer*). Ton : **encouragement /
 célébration**. Émotion-clé : *Joie de vivre*.
@@ -86,8 +85,8 @@ célébration**. Émotion-clé : *Joie de vivre*.
 
 ## Lecture 5 : Inès (Soleil en Taureau)
 
-**Ciel du jour** · Nouvelle Lune en Bélier · proche de l'équinoxe de printemps
-**Dérivation** · Équinoxe (*équilibre, jour et nuit à égalité*) combiné à la
+**Dérivation** · Nouvelle Lune en Bélier, proche de l'équinoxe. Équinoxe
+(*équilibre, jour et nuit à égalité*) combiné à la
 Nouvelle Lune (*commencement*). Taureau : terre, constance, patience. Ton :
 **réassurance**. Émotion-clé : *Sérénité*.
 
