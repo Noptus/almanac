@@ -10,8 +10,11 @@ driving a **1360×480 1-bit e-ink** panel laid out as **5 columns × 1 row**.
 | `src/oracle_astro.{h,cpp}` | Meeus-style astronomy (moon phase, signs, retrogrades, seasons, seed). Pure `<cmath>` + integer math. | desktop + ESP32 |
 | `src/oracle_fragments.h` | 278-fragment bank, **auto-generated** from `oracle_generator/fragments.py`. | desktop + ESP32 |
 | `src/oracle_composer.{h,cpp}` | Deterministic selection (xorshift64\*), `{name}` handling, safety filter, 30-day collision history. No heap. | desktop + ESP32 |
-| `src/font5x7.h` | Embedded 5×7 bitmap font (~475 B flash). | desktop + ESP32 |
-| `src/oracle_render.{h,cpp}` | 1bpp framebuffer, text/word-wrap, moon icon, 5-col layout, BMP export. | desktop + ESP32 |
+| `src/oracle_text.{h,cpp}` | **EB Garamond serif** via stb_truetype, antialiasing dithered to 1-bit. | desktop + ESP32 |
+| `src/oracle_font_ttf.h` | Embedded ASCII-subset EB Garamond (Regular + SemiBold), **auto-generated**. ~40 KB flash. | desktop + ESP32 |
+| `third_party/stb_truetype.h` | Public-domain single-header TrueType rasteriser. | desktop + ESP32 |
+| `src/font5x7.h` | Legacy 5×7 bitmap font (kept for reference; no longer used in the layout). | — |
+| `src/oracle_render.{h,cpp}` | 1bpp framebuffer, word-wrap, moon icon, 5-col layout, BMP export. | desktop + ESP32 |
 | `main.cpp` | Desktop harness: prints the reading + writes a `.bmp` preview. | desktop |
 | `esp32/oracle_esp32.ino` | Thin on-device wrapper: RTC → render → blit to GxEPD2 → deep-sleep 24h. | ESP32 |
 
@@ -42,6 +45,11 @@ script does this automatically) so the two platforms can't drift.
 - **Framebuffer**: `1360 × 480 / 8 = 81,600 bytes` in `.bss`. Fits ESP32 SRAM
   (~320 KB). On tight boards, move `framebuf` to PSRAM (`heap_caps_malloc(...,
   MALLOC_CAP_SPIRAM)`).
+- **Fonts**: the two ASCII-subset EB Garamond faces embed as ~40 KB of flash
+  (`oracle_font_ttf.h`). stb_truetype rasterises glyphs on demand into small
+  temporary bitmaps (freed immediately), so there's no glyph cache to size.
+  Small UI text is hard-thresholded for crispness; large text (message, title)
+  is ordered-dithered for smooth curves.
 - **Panel class**: `oracle_esp32.ino` uses a *placeholder* GxEPD2 class name —
   replace `GxEPD2_1360x480_TEMPLATE` with the exact class for your controller
   (large panels are often tiled; use the matching multi-panel driver). Our

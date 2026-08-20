@@ -4,8 +4,10 @@
 // portable sources, which compile unchanged here and on desktop:
 //     ../src/oracle_astro.{h,cpp}
 //     ../src/oracle_composer.{h,cpp}   (+ oracle_fragments.h, generated)
+//     ../src/oracle_text.{h,cpp}        (EB Garamond serif via stb_truetype)
+//     ../src/oracle_font_ttf.h          (embedded serif, generated)
+//     ../third_party/stb_truetype.h
 //     ../src/oracle_render.{h,cpp}      (framebuffer + layout)
-//     ../src/font5x7.h
 //
 // For Arduino IDE: put the .ino in a folder and copy (or symlink) the src/*
 // files next to it, OR use PlatformIO with a lib_extra_dirs pointing at src/.

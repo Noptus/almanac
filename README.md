@@ -62,11 +62,14 @@ almanac/
 ├─ oracle.py               interactive CLI: asks birthdate, location, crystal
 ├─ test_harness.py         20 sample messages + sanity checks
 ├─ firmware/               ESP32 / e-ink C++ port (see firmware/README.md)
-│  ├─ src/                  portable core: astro, composer, render, font
+│  ├─ src/                  portable core: astro, composer, render, serif text
+│  ├─ fonts/                EB Garamond (ASCII subset, SIL OFL) + license
+│  ├─ third_party/          stb_truetype.h (public domain)
 │  ├─ main.cpp              desktop preview → writes a .bmp
-│  ├─ build_desktop.sh      regenerates C++ fragments from Python, compiles
+│  ├─ build_desktop.sh      regenerates fragments + font, compiles
 │  └─ esp32/oracle_esp32.ino  on-device wrapper (RTC → render → e-ink → sleep)
 ├─ tools/gen_fragments_cpp.py  generates firmware/src/oracle_fragments.h
+├─ tools/gen_font_cpp.py       embeds the serif into oracle_font_ttf.h
 ├─ images/                 sample renders (this README)
 ├─ vision.png              product vision render
 └─ project.md              master project document
@@ -133,3 +136,10 @@ touch, kept clearly separate from the (real) astronomy.
   swap in the exact driver for your controller before flashing.
 - `oracle_generator/fragments.py` is the single source of truth for message
   content — never hand-edit the generated `firmware/src/oracle_fragments.h`.
+
+## Credits
+
+Typeset in **EB Garamond** by Georg Duffner & Octavio Pardo, used under the
+[SIL Open Font License 1.1](firmware/fonts/EBGaramond-OFL.txt). TrueType
+rasterisation by [stb_truetype](https://github.com/nothings/stb) (public
+domain).
