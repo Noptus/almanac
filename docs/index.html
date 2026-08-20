@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>The Oracle — How It Works</title>
-<meta name="description" content="Almanac &amp; Stone — how each daily reading is computed from real ephemeris data and generated from a codified astrological tradition. No AI: pure math and correspondence.">
+<title>The Oracle · How It Works</title>
+<meta name="description" content="Almanac Stone. How each daily reading is calculated from real ephemeris data and cast from a codified astrological tradition. No AI: pure math and correspondence.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Cormorant+Garamond:wght@500;600&display=swap" rel="stylesheet">
@@ -48,6 +48,9 @@
   .rule-star{display:flex; align-items:center; justify-content:center; gap:16px; margin:34px 0 0; color:var(--gold-soft)}
   .rule-star::before,.rule-star::after{content:""; height:1px; width:120px; background:linear-gradient(90deg,transparent,var(--gold-soft))}
   .rule-star::after{background:linear-gradient(90deg,var(--gold-soft),transparent)}
+
+  .hero-img{max-width:var(--maxw); margin:-40px auto 0; padding:0 28px; position:relative; z-index:2}
+  .hero-img img{width:100%; display:block; border-radius:16px; border:1px solid var(--line); box-shadow:0 30px 80px rgba(0,0,0,.55)}
 
   section{padding:64px 0; border-bottom:1px solid var(--line)}
   section:last-of-type{border-bottom:none}
@@ -127,34 +130,38 @@
 <header class="hero">
   <canvas class="stars" id="stars"></canvas>
   <div class="hero-inner">
-    <div class="mark">Almanac &amp; Stone</div>
+    <div class="mark">Almanac Stone</div>
     <h1>How The Oracle Works</h1>
-    <p class="lede">Every morning your almanac shows a single reading, drawn from the real position of the sky and the meaning tradition has long assigned to it. No guessing, no black box — just precise astronomy and a codified craft.</p>
+    <p class="lede">Each morning your almanac shows a single reading, drawn from the true position of the sky and the meaning tradition has long assigned to it. No guessing. Precise astronomy, a codified craft.</p>
     <div class="rule-star">✶</div>
   </div>
 </header>
 
+<div class="hero-img">
+  <img src="img/vision.png" alt="The Almanac Stone: a triangular desk piece with a glowing crystal and an e-ink reading.">
+</div>
+
 <section id="intro">
   <div class="wrap">
     <p class="eyebrow">The promise</p>
-    <h2>Computed, not conjured</h2>
-    <p class="lead">A reading is produced in three honest stages. First you tell us where and when you began. Then we compute the sky — yours at birth, and today's above it — to the precision professional astrologers use. Finally we translate those positions into words using tables of correspondence handed down through the tradition. <strong class="dim">There is no artificial intelligence in the writing.</strong> The same chart on the same day always yields the same reading — because it is derived, not invented.</p>
+    <h2>Calculated, not conjured</h2>
+    <p class="lead">A reading is cast in three stages. You tell us where and when you were born. We calculate the sky, yours at birth and today's above it, to the precision a professional astrologer uses. We then read those positions into words through the tradition's tables of correspondence. <strong class="dim">No artificial intelligence writes the reading.</strong> The same chart on the same day always gives the same words, because it is derived, not invented.</p>
 
     <div class="steps">
       <div class="card">
         <div class="num">Stage I</div>
         <h3>You order</h3>
-        <p>Your name, the moment and place of your birth, and the stone you choose. This is everything needed to cast your chart — and nothing more.</p>
+        <p>Your name, the moment and place of your birth, and your stone. Everything needed to cast your chart, nothing more.</p>
       </div>
       <div class="card">
         <div class="num">Stage II</div>
-        <h3>We compute</h3>
-        <p>An ephemeris fixes the Sun, Moon and planets to a fraction of a degree — your natal chart, and each day's transits to it.</p>
+        <h3>We cast the chart</h3>
+        <p>An ephemeris fixes the Sun, Moon and planets to a fraction of a degree: your natal chart, and each day's transits to it.</p>
       </div>
       <div class="card">
         <div class="num">Stage III</div>
-        <h3>We translate</h3>
-        <p>Tables of correspondence turn the strongest transit of the day into language, following rules — not a random sentence generator.</p>
+        <h3>We read it</h3>
+        <p>Tables of correspondence turn the day's strongest transit into language, by rule, never by a random sentence generator.</p>
       </div>
     </div>
   </div>
@@ -164,33 +171,33 @@
   <div class="wrap">
     <p class="eyebrow">Stage I · Onboarding</p>
     <h2>What you tell us when you order</h2>
-    <p class="lead">A birth chart is a photograph of the sky from one place, at one instant. To reproduce it we need the instant and the place precisely — the same details any astrologer would ask for.</p>
+    <p class="lead">A birth chart is the sky from one place, at one instant. To cast it we need that instant and that place, the same details any astrologer asks for.</p>
 
     <div class="fields">
       <div class="field"><div class="k">Name <span class="req">used</span></div><div class="v">For the engraving and to address the reading to you. Never leaves your device.</div></div>
-      <div class="field"><div class="k">Birth date <span class="req">required</span></div><div class="v">Fixes the Sun sign and the longitude of every planet at your birth.</div></div>
-      <div class="field"><div class="k">Birth time <span class="req">required*</span></div><div class="v">Hour and minute set your <em>Ascendant</em> (rising sign) and the house each planet falls in. If truly unknown, we cast a noon chart and omit the houses — and tell you so.</div></div>
-      <div class="field"><div class="k">Birth place <span class="req">required</span></div><div class="v">A city, geocoded to latitude, longitude and historical time zone — needed to convert your local birth time to Universal Time and to compute the Ascendant.</div></div>
-      <div class="field"><div class="k">Stone <span class="req">used</span></div><div class="v">The crystal seated in the front slot. Each has a traditional intention that colours one line of the reading.</div></div>
-      <div class="field"><div class="k">Tone &amp; language <span class="opt">optional</span></div><div class="v">Reassuring, encouraging, reflective… and the language the almanac speaks.</div></div>
+      <div class="field"><div class="k">Birth date <span class="req">required</span></div><div class="v">Sets the Sun sign and the longitude of every planet at your birth.</div></div>
+      <div class="field"><div class="k">Birth time <span class="req">required*</span></div><div class="v">Hour and minute set your <em>Ascendant</em> (rising sign) and the house each planet falls in. If unknown, we cast a noon chart without houses, and say so.</div></div>
+      <div class="field"><div class="k">Birth place <span class="req">required</span></div><div class="v">A city, resolved to latitude, longitude and time zone. Needed for the Ascendant and to place your birth against the stars.</div></div>
+      <div class="field"><div class="k">Stone <span class="req">used</span></div><div class="v">The crystal in the front slot. Each carries a traditional intention that colours one line.</div></div>
+      <div class="field"><div class="k">Tone &amp; language <span class="opt">optional</span></div><div class="v">Reassuring, encouraging, reflective, and the language your almanac speaks.</div></div>
     </div>
-    <div class="callout"><strong>Why time and place matter so much.</strong> Two people born on the same day can have different rising signs and house placements depending on the hour and city of birth. Skipping time or place would reduce your reading to a generic daily horoscope — exactly what this device is built <em>not</em> to be.</div>
+    <div class="callout"><strong>Why time and place matter.</strong> Two people born the same day can rise in different signs, with planets in different houses, depending on the hour and city. Without them, a reading falls back to a generic horoscope. This device is made not to be that.</div>
   </div>
 </section>
 
 <section id="compute">
   <div class="wrap">
-    <p class="eyebrow">Stage II · Computation</p>
-    <h2>How we fix the Moon and planets, precisely</h2>
-    <p class="lead">Positions come from an <strong>ephemeris</strong> — the same class of data (Swiss Ephemeris, derived from NASA/JPL) that professional software runs on. We precompute a table of daily positions spanning centuries and bake it into the device, so the almanac is accurate to a fraction of a degree with no connection required.</p>
+    <p class="eyebrow">Stage II · The chart</p>
+    <h2>How we place the Moon and planets, precisely</h2>
+    <p class="lead">Positions come from an <strong>ephemeris</strong>, the same source (Swiss Ephemeris, from NASA/JPL) professional astrologers rely on. A table of daily positions spanning centuries lives on the device, so every reading is accurate to a fraction of a degree, offline.</p>
 
     <div class="pipe">
-      <div class="pstep"><div class="badge">1</div><div><h3>Local birth time → Universal Time</h3><p>Your city gives the time zone and any historical daylight saving in force on that date. We convert to UT and then to a <strong>Julian Day</strong>, the continuous day-count astronomy uses.</p></div></div>
-      <div class="pstep"><div class="badge">2</div><div><h3>Ephemeris lookup → ecliptic longitudes</h3><p>For that instant we read the geocentric ecliptic longitude of the Sun, Moon and Mercury through Pluto (plus the lunar node), interpolated between table entries. A longitude of 0–360° places each body in a sign (30° each).</p></div></div>
-      <div class="pstep"><div class="badge">3</div><div><h3>Ascendant &amp; houses</h3><p>From the local sidereal time, the obliquity of the ecliptic and your latitude we compute the <strong>Ascendant</strong> — the degree rising on the eastern horizon — and the twelve house cusps that divide your chart into life areas.</p></div></div>
-      <div class="pstep"><div class="badge">4</div><div><h3>Moon phase &amp; retrogrades</h3><p>The Sun–Moon elongation gives the phase and exact illuminated fraction. Comparing a planet's longitude across successive days tells us when it is <strong>retrograde</strong> — apparently moving backward.</p></div></div>
-      <div class="pstep"><div class="badge">5</div><div><h3>Today's transits to your chart</h3><p>Each morning we compare today's planetary longitudes to your natal ones. When the angle between them lands on a recognised <strong>aspect</strong> (0°, 60°, 90°, 120°, 180°) within a small tolerance — the <em>orb</em> — a transit is active.</p></div></div>
-      <div class="pstep"><div class="badge">6</div><div><h3>Rank the day</h3><p>Active transits are scored by tightness of orb and the weight of the planets involved. The single strongest becomes the seed of today's reading.</p></div></div>
+      <div class="pstep"><div class="badge">1</div><div><h3>Birth time to Universal Time</h3><p>Your city gives the time zone and any daylight saving in force that day. We convert to UT, then to a <strong>Julian Day</strong>, the continuous day-count astronomy uses.</p></div></div>
+      <div class="pstep"><div class="badge">2</div><div><h3>Ephemeris to ecliptic longitude</h3><p>For that instant we read the longitude of the Sun, Moon and Mercury through Pluto, with the lunar node. A longitude of 0 to 360° places each body in a sign, thirty degrees each.</p></div></div>
+      <div class="pstep"><div class="badge">3</div><div><h3>Ascendant and houses</h3><p>From local sidereal time, the tilt of the ecliptic and your latitude we find the <strong>Ascendant</strong>, the degree rising in the east, and the twelve house cusps that divide your chart into life areas.</p></div></div>
+      <div class="pstep"><div class="badge">4</div><div><h3>Moon phase and retrogrades</h3><p>The Sun to Moon elongation gives the phase and exact illuminated fraction. A planet's motion across successive days shows when it turns <strong>retrograde</strong>.</p></div></div>
+      <div class="pstep"><div class="badge">5</div><div><h3>The day's transits to your chart</h3><p>Each morning we set today's planets against your natal ones. When the angle between them meets a known <strong>aspect</strong> (0°, 60°, 90°, 120°, 180°) within a small tolerance, the <em>orb</em>, that transit is active.</p></div></div>
+      <div class="pstep"><div class="badge">6</div><div><h3>The day's ruling transit</h3><p>Active transits are weighed by the tightness of the orb and the standing of the planets. The strongest becomes the heart of today's reading.</p></div></div>
     </div>
 
     <h3>What "an aspect within orb" means</h3>
@@ -207,9 +214,9 @@ strength   = (6.0 - orb) * weight(transit_planet) * weight(natal_planet)
 
 <section id="generate">
   <div class="wrap">
-    <p class="eyebrow">Stage III · Generation</p>
-    <h2>How we turn sky into language — with tradition, not AI</h2>
-    <p class="lead">The strongest transit is a precise astrological statement: <em>transiting Saturn square natal Moon, in your 4th house</em>. To voice it we consult <strong>tables of correspondence</strong> — the meanings the tradition assigns to each planet, sign, house and aspect — and assemble a sentence from fixed grammatical skeletons. Every word traces back to a rule and a source.</p>
+    <p class="eyebrow">Stage III · The reading</p>
+    <h2>How we read the sky into language, by tradition, not AI</h2>
+    <p class="lead">The ruling transit is a precise astrological statement: <em>transiting Saturn square natal Moon, in your 4th house</em>. To voice it we consult <strong>tables of correspondence</strong>, the meanings the tradition gives each planet, sign, house and aspect, and set them into a fixed sentence. Every word traces to a rule and a source.</p>
 
     <div class="tablewrap">
     <table class="corr">
@@ -262,14 +269,14 @@ strength   = (6.0 - orb) * weight(transit_planet) * weight(natal_planet)
       <div class="reading">
         <span class="date">20 August</span>
         <span class="sub">Moon in Sagittarius · Saturn retrograde</span>
-        A steadying weight settles over home and feeling today; Saturn asks your heart for patience rather than speed. Let structure be a kindness, not a cage — and keep your amethyst close for a clear, calm mind.
+        A steadying weight settles over home and feeling today. Saturn asks your heart for patience, not speed. Let structure be a kindness, not a cage, and keep your amethyst close for a clear, calm mind.
       </div>
-      <p class="faint" style="margin-top:16px">The planet, house and aspect chose the <em>subject</em> and the <em>tone</em>; the correspondence tables supplied the <em>keywords</em>; a fixed sentence skeleton supplied the <em>grammar</em>; a deterministic seed chose among equivalent phrasings so no two recent days repeat. The stone line comes straight from its correspondence row.</p>
+      <p class="faint" style="margin-top:16px">Planet, house and aspect chose the <em>subject</em> and <em>tone</em>. The tables gave the <em>keywords</em>. A fixed sentence gave the <em>grammar</em>. A seed chose among equal phrasings, so no two recent days repeat. The stone line comes straight from its correspondence row.</p>
     </div>
 
-    <div class="callout"><strong>Determinism is a feature.</strong> Because the reading is derived from your chart and the day by fixed rules, it is reproducible and auditable. Give the same birth data and date to any astrologer with the same tables and they would reach the same reading. That is what separates a computed almanac from a fortune cookie.</div>
+    <div class="callout"><strong>The same chart gives the same reading.</strong> Derived from your chart and the day by fixed rules, it can be checked. Hand the same birth data and date to any astrologer with the same tables, and they reach the same reading. That is what sets this apart from a fortune cookie.</div>
 
-    <h3>On the two samples below</h3>
+    <h3>Two readings, as they appear</h3>
     <div class="gallery">
       <figure>
         <img src="img/sample-first-quarter.png" alt="Sample reading, first quarter moon">
@@ -287,7 +294,7 @@ strength   = (6.0 - orb) * weight(transit_planet) * weight(natal_planet)
   <div class="wrap">
     <p class="eyebrow">A word on honesty</p>
     <h2>Reflection, not prediction</h2>
-    <p class="lead">The Oracle never claims to know the future, and never offers medical, financial or legal advice — a filter enforces this on every reading before it is shown. The astronomy is literally true; the <em>meanings</em> belong to a long human tradition of reading the sky as a mirror for reflection. We present it in that spirit: a considered, well-made prompt for the day — closer to a stoic maxim than a horoscope that pretends to foretell events.</p>
+    <p class="lead">The Oracle never claims to know the future, and never offers medical, financial or legal advice. A filter holds every reading to this. The astronomy is literally true. The <em>meanings</em> belong to a long human tradition of reading the sky as a mirror. We offer it in that spirit: a considered prompt for the day, closer to a stoic maxim than a horoscope that pretends to foretell events.</p>
   </div>
 </section>
 
@@ -295,29 +302,29 @@ strength   = (6.0 - orb) * weight(transit_planet) * weight(natal_planet)
   <div class="wrap">
     <p class="eyebrow">Provenance</p>
     <h2>Where the craft comes from</h2>
-    <p class="lead">The computation rests on published astronomy; the interpretation on named, respected sources. The correspondence tables are reviewed by a practicing astrologer before they ship.</p>
+    <p class="lead">The astronomy rests on published tables. The meanings rest on named, respected sources. A practicing astrologer reviews the correspondence tables before they ship.</p>
     <ul class="sources">
-      <li><strong>Swiss Ephemeris</strong> — Astrodienst, derived from NASA/JPL DE ephemerides. Planetary positions.</li>
-      <li><strong>Jean Meeus</strong>, <em>Astronomical Algorithms</em> — phase, sidereal time, obliquity.</li>
-      <li><strong>Robert Hand</strong>, <em>Planets in Transit</em> — transit interpretation.</li>
-      <li><strong>Dane Rudhyar</strong>, <em>The Lunation Cycle</em> — moon-phase meaning.</li>
-      <li><strong>Ptolemy</strong>, <em>Tetrabiblos</em> — classical aspects &amp; dignities.</li>
-      <li><strong>Traditional crystal correspondences</strong> — stone intentions.</li>
+      <li><strong>Swiss Ephemeris</strong>, Astrodienst, from NASA/JPL. Planetary positions.</li>
+      <li><strong>Jean Meeus</strong>, <em>Astronomical Algorithms</em>. Phase, sidereal time, obliquity.</li>
+      <li><strong>Robert Hand</strong>, <em>Planets in Transit</em>. Transit interpretation.</li>
+      <li><strong>Dane Rudhyar</strong>, <em>The Lunation Cycle</em>. Moon-phase meaning.</li>
+      <li><strong>Ptolemy</strong>, <em>Tetrabiblos</em>. Classical aspects and dignities.</li>
+      <li><strong>Traditional crystal correspondences</strong>. Stone intentions.</li>
     </ul>
-    <p class="faint" style="margin-top:22px">The device runs fully offline. Nothing about you is transmitted; your chart is computed once, at order, and lives only on your almanac.</p>
+    <p class="faint" style="margin-top:22px">The device runs fully offline. Nothing about you is transmitted. Your chart is cast once, at order, and lives only on your almanac.</p>
   </div>
 </section>
 
 <footer>
   <div class="wrap">
     <div class="rule-star">✶</div>
-    <div>The Oracle — Almanac &amp; Stone</div>
+    <div>The Oracle · Almanac Stone</div>
     <div style="margin-top:8px"><a href="https://github.com/Noptus/almanac">Source &amp; method on GitHub</a></div>
   </div>
 </footer>
 
 <script>
-// Lightweight starfield — decorative, respects reduced-motion.
+// Lightweight starfield, decorative, respects reduced-motion.
 (function(){
   var c=document.getElementById('stars'); if(!c) return;
   var ctx=c.getContext('2d'), stars=[], w,h,
