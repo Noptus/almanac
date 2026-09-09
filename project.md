@@ -5,9 +5,9 @@
 
 ## 1. Concept
 
-A screen-free, single-purpose ambient hardware object: a wide, low triangular-wedge enclosure housing a 7.5-inch e-ink display that refreshes once a day with a personalized "page" — an astronomy-grounded almanac reading generated from the owner's birth date, time, and location.
+A screen-free, single-purpose ambient hardware object: a wide, low triangular-wedge enclosure housing a 7.5-inch e-ink display that refreshes once a day with a personalized "page" - an astronomy-grounded almanac reading generated from the owner's birth date, time, and location.
 
-**Core positioning:** No app. No login. No Bluetooth pairing. No subscription. No notifications. No settings menu. One page, once a day, forever. It is explicitly a *digital-sabbath object* — the value isn't the astrology content itself, it's removing the phone from a daily ritual moment. This "subtraction" framing is the strongest brand asset, stronger than the zodiac content itself, because it appeals even to people (like the founder) who don't believe in astrology.
+**Core positioning:** No app. No login. No Bluetooth pairing. No subscription. No notifications. No settings menu. One page, once a day, forever. It is explicitly a *digital-sabbath object* - the value isn't the astrology content itself, it's removing the phone from a daily ritual moment. This "subtraction" framing is the strongest brand asset, stronger than the zodiac content itself, because it appeals even to people (like the founder) who don't believe in astrology.
 
 **Working name:** **Almanac & Stone** (alternatives below).
 
@@ -21,14 +21,14 @@ A screen-free, single-purpose ambient hardware object: a wide, low triangular-we
 | Devotional/Bible daily ritual (fast-follow SKU) | 100M+ MAU on YouVersion, 14–22M daily engaged users, growing double-digit YoY; a screen-free "wearable cross" already crowdfunded successfully [cite:117][cite:120][cite:123] |
 | Financial ticker (secondary SKU) | Existing commercial e-paper tickers (TickrMeter) and an Etsy category already prove demand [cite:112][cite:115] |
 | Digital minimalism / "no app" appeal | 53% of Americans want to reduce phone use; "dumbphone"/digital-minimalism trend (Analog 2026) is a fast-growing category driven by notification fatigue [cite:176][cite:179][cite:180] |
-| AI-hardware backlash | Humane AI Pin failed on slow responses, subscription stacking, and unclear value over a phone — the cautionary tale this product deliberately avoids [cite:12][cite:8][cite:4] |
-| Notetaker category complaints | Reddit users actively hunt for "no subscription" alternatives to Plaud/Limitless — proof that subscription fatigue is a real purchase blocker [cite:181][cite:178][cite:186] |
+| AI-hardware backlash | Humane AI Pin failed on slow responses, subscription stacking, and unclear value over a phone - the cautionary tale this product deliberately avoids [cite:12][cite:8][cite:4] |
+| Notetaker category complaints | Reddit users actively hunt for "no subscription" alternatives to Plaud/Limitless - proof that subscription fatigue is a real purchase blocker [cite:181][cite:178][cite:186] |
 | Crystal/gemstone market (stone accessory) | Healing crystal market ~$1.2–1.8B in the US; personalized/intention-based crystal products carry 35–55% price premiums; ~42% of Americans believe objects can hold spiritual energy [cite:198][cite:199][cite:201] |
 
 **Top 3 content niches identified (in priority order):**
-1. **Astrology/personal almanac** — largest willing-to-pay audience, strongest case for screen-free upgrade over apps.
-2. **Bible/devotional** — largest daily-active audience of any niche, proven hardware-gifting behavior.
-3. **DnD/tabletop companion** — smaller market, highest engagement intensity, strong prop/collectible appeal, aligns with founder's own hobby.
+1. **Astrology/personal almanac** - largest willing-to-pay audience, strongest case for screen-free upgrade over apps.
+2. **Bible/devotional** - largest daily-active audience of any niche, proven hardware-gifting behavior.
+3. **DnD/tabletop companion** - smaller market, highest engagement intensity, strong prop/collectible appeal, aligns with founder's own hobby.
 
 ---
 
@@ -40,7 +40,7 @@ Evolved through several iterations: book-shaped grimoire → triangular wedge ("
 - **Dimensions:** ~210 mm wide × 108 mm tall × 78 mm deep. Slope ~55° from the desk.
 - **Materials:** Matte obsidian-black anodized-look shell, thin gold trim lip, fine gold constellation engravings.
 - **Display:** 7.5" monochrome e-ink, 800×480, panoramic/edge-to-edge with narrow gold bezel.
-- **Controls:** One polished brass "seal" button on the top ridge (reveal/advance content) — deliberately ceremonial, not a settings interface. No visible pairing button, no status LEDs, no "connecting..." spinner.
+- **Controls:** One polished brass "seal" button on the top ridge (reveal/advance content) - deliberately ceremonial, not a settings interface. No visible pairing button, no status LEDs, no "connecting..." spinner.
 - **Gemstone accent:** A small, visible, naturally-cut crystal (amethyst standard; rose quartz and citrine as swappable upsell variants) set into the top ridge beside the seal button, softly lit by a warm LED. Framed honestly in fine print as decorative, marketed evocatively ("a moonstone sits at its heart"). Swappable stones become a $10–15 upsell SKU; a "Founder's Edition" with a real gemstone vs. a lower-cost polished glass/resin version creates a natural two-tier product line.
 - **USB-C** hidden on the rear for charging only.
 
@@ -58,7 +58,7 @@ PETG, 0.2mm layers, 4 walls, 25% gyroid infill, M2.5 heat-set inserts to join be
 
 ## 4. Electronics & Firmware
 
-**Fully offline architecture** — no internet dependency after initial factory programming.
+**Fully offline architecture** - no internet dependency after initial factory programming.
 
 ```
 USB-C 5V → charge IC (TP4056/IP5306) → 1S LiPo 2500mAh
@@ -74,18 +74,18 @@ USB-C 5V → charge IC (TP4056/IP5306) → 1S LiPo 2500mAh
            (or 1 ceremonial seal)
 ```
 
-- **MCU:** ESP32-S3 — no ongoing Wi-Fi needed; astronomical calculations run entirely on-device.
-- **Storage:** 16MB flash (~€10–25) holds the ephemeris/algorithm library, hundreds of hand-written phrase fragments, and a bitmap font renderer — all locally, no image downloads needed [cite:143][cite:153][cite:156].
-- **Astronomy engine:** Meeus-style algorithms compute moon phase, moon sign, planetary retrogrades, solstices/equinoxes from date math alone — no ephemeris files or network calls required [cite:147][cite:152][cite:151].
-- **Personalization at order time:** Customer enters name, birth date/time/place on a web form at checkout. Place is geocoded once, server-side (the only moment the system ever touches the internet). Each unit is individually flashed with this config at final assembly — "built once, for you, forever."
-- **No app for daily use.** Optional future update path: one-time USB-C connection to a web page to change themes/correct birth data, rather than a persistent Bluetooth link — preserves the "it just works" promise while still allowing occasional edits.
+- **MCU:** ESP32-S3 - no ongoing Wi-Fi needed; astronomical calculations run entirely on-device.
+- **Storage:** 16MB flash (~€10–25) holds the ephemeris/algorithm library, hundreds of hand-written phrase fragments, and a bitmap font renderer - all locally, no image downloads needed [cite:143][cite:153][cite:156].
+- **Astronomy engine:** Meeus-style algorithms compute moon phase, moon sign, planetary retrogrades, solstices/equinoxes from date math alone - no ephemeris files or network calls required [cite:147][cite:152][cite:151].
+- **Personalization at order time:** Customer enters name, birth date/time/place on a web form at checkout. Place is geocoded once, server-side (the only moment the system ever touches the internet). Each unit is individually flashed with this config at final assembly - "built once, for you, forever."
+- **No app for daily use.** Optional future update path: one-time USB-C connection to a web page to change themes/correct birth data, rather than a persistent Bluetooth link - preserves the "it just works" promise while still allowing occasional edits.
 - **Battery life:** 4–8 weeks per charge (one full e-ink refresh/day, RTC-driven wake).
 
 ### Content generation engine (design brief)
 A deterministic, offline-capable Python module (`oracle_generator`) combining:
 1. Real astronomical calculations (moon phase, moon sign, retrogrades, seasonal markers).
-2. A large (150+) hand-written fragment bank tagged by moon phase, planetary emphasis, season, and tone — assembled into 40–70 word daily messages, seeded deterministically by `(date, user birth data)` so output is varied but reproducible and never repeats within a 30-day rolling window.
-3. A hard-coded `content_safety_check()` guardrail blocking absolute predictive language ("will happen," "guaranteed," medical/financial/legal claims) before any message reaches the screen — this is both a writing-quality control and the primary legal-compliance mechanism (see Section 6).
+2. A large (150+) hand-written fragment bank tagged by moon phase, planetary emphasis, season, and tone - assembled into 40–70 word daily messages, seeded deterministically by `(date, user birth data)` so output is varied but reproducible and never repeats within a 30-day rolling window.
+3. A hard-coded `content_safety_check()` guardrail blocking absolute predictive language ("will happen," "guaranteed," medical/financial/legal claims) before any message reaches the screen - this is both a writing-quality control and the primary legal-compliance mechanism (see Section 6).
 
 Full engineering prompt for this module has been produced separately (`oracle-content-generator-prompt.md`).
 
@@ -101,10 +101,10 @@ Full engineering prompt for this module has been produced separately (`oracle-co
 | ESP32-S3 DevKit | USB-C, Wi-Fi | €8–15 |
 | LiPo 2500mAh + PCM | 1S | €8–12 |
 | USB-C charge board | TP4056/IP5306 | €3–6 |
-| DS3231 RTC | — | €2–4 |
-| Buttons, magnets, inserts | — | €6–10 |
-| PETG filament (~180g) | — | €4–6 |
-| Finishing (paint, gold foil, feet) | — | €10–20 |
+| DS3231 RTC | - | €2–4 |
+| Buttons, magnets, inserts | - | €6–10 |
+| PETG filament (~180g) | - | €4–6 |
+| Finishing (paint, gold foil, feet) | - | €10–20 |
 | Gemstone accent (amethyst) | small polished stone + LED mount | €5–15 |
 | **Total, unit 1** | | **€111–198** |
 
@@ -119,7 +119,7 @@ Full engineering prompt for this module has been produced separately (`oracle-co
 **Landed unit cost at 1,000–5,000 units: ~€55–75** (including panel, electronics, assembly), supporting a **€149–189 retail price** (+€10–15 for gemstone variants).
 
 ### Certification (hardware-only cost line)
-Using pre-certified Wi-Fi/BLE modules and certified battery packs: FCC ~$3,000–$10,000, CE self-certification lab testing ~$1,500–$3,500 — avoid custom RF design to stay at the low end [cite:163][cite:169][cite:165].
+Using pre-certified Wi-Fi/BLE modules and certified battery packs: FCC ~$3,000–$10,000, CE self-certification lab testing ~$1,500–$3,500 - avoid custom RF design to stay at the low end [cite:163][cite:169][cite:165].
 
 ---
 
@@ -128,7 +128,7 @@ Using pre-certified Wi-Fi/BLE modules and certified battery packs: FCC ~$3,000�
 | Risk area | Assessment | Mitigation |
 |---|---|---|
 | "Fortune telling" consumer-protection laws (several US states restrict paid predictive claims) [cite:166][cite:160] | Low risk if content avoids certainty language | Label "for reflection and entertainment purposes only"; content-generator safety filter blocks absolute predictive phrasing by design |
-| GDPR / birth data privacy | Low risk — birth date/time/place is ordinary personal data, not GDPR "special category" data [cite:158][cite:159] | Market the offline architecture as a genuine privacy feature: "your birth chart lives only on your device, never on a server" |
+| GDPR / birth data privacy | Low risk - birth date/time/place is ordinary personal data, not GDPR "special category" data [cite:158][cite:159] | Market the offline architecture as a genuine privacy feature: "your birth chart lives only on your device, never on a server" |
 | Trademark: "Almanac" | The word itself is generic and unprotectable; "The Old Farmer's Almanac" is a specific registered mark to avoid confusion with [cite:195][cite:190][cite:193] | Use "Almanac" generically but ensure the full brand name is distinct; run a proper USPTO + EU trademark search before finalizing |
 | Product safety certification | Manageable, budgeted cost (see Section 5) | Use pre-certified wireless modules and battery packs |
 | Stone/crystal marketing claims | Low risk if framed as decorative, not medicinal | Fine-print disclaimer ("decorative, does not affect device function") alongside evocative marketing copy |
@@ -138,10 +138,10 @@ Using pre-certified Wi-Fi/BLE modules and certified battery packs: FCC ~$3,000�
 ## 7. Business Model & Go-to-Market
 
 **Revenue streams:**
-1. Hardware margin — €149–189 retail, ~€75–115 gross margin/unit.
-2. Content subscription (year 2+) — €3–6/month for deeper personalization or additional content packs (astrology, devotional, DnD), mirroring Co-Star/YouVersion monetization [cite:98][cite:120].
-3. Accessory SKUs — swappable gemstones (€10–15 each), interchangeable bezels, themed content packs.
-4. B2B/gifting channels — faith organizations, wellness studios, metaphysical shops for the devotional SKU.
+1. Hardware margin - €149–189 retail, ~€75–115 gross margin/unit.
+2. Content subscription (year 2+) - €3–6/month for deeper personalization or additional content packs (astrology, devotional, DnD), mirroring Co-Star/YouVersion monetization [cite:98][cite:120].
+3. Accessory SKUs - swappable gemstones (€10–15 each), interchangeable bezels, themed content packs.
+4. B2B/gifting channels - faith organizations, wellness studios, metaphysical shops for the devotional SKU.
 
 **Phased rollout:**
 1. **Phase 0 (0–3 months):** 3–5 working prototypes, validate with 20–30 real users.
@@ -183,4 +183,4 @@ Using pre-certified Wi-Fi/BLE modules and certified battery packs: FCC ~$3,000�
 3. Build the `oracle_generator` content module (astronomy layer + fragment bank + safety filter) and pilot-test output quality with real users, believers and skeptics alike.
 4. Source gemstone supplier for amethyst/rose quartz/citrine variants at prototype quantities.
 5. Run trademark search on finalist names.
-6. Draft crowdfunding page copy explicitly positioned against phone-based astrology apps and against the AI-hardware subscription-fatigue backlash ("no app, no login, no subscription — just built for you, once, forever").
+6. Draft crowdfunding page copy explicitly positioned against phone-based astrology apps and against the AI-hardware subscription-fatigue backlash ("no app, no login, no subscription - just built for you, once, forever").

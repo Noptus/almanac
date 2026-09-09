@@ -1,4 +1,4 @@
-# Almanac Stone — prototype shopping list (BOM)
+# Almanac Stone - prototype shopping list (BOM)
 
 Prices are rough single-unit estimates (USD) for a working prototype, not a
 production run. You already have the software; this is everything else.
@@ -12,7 +12,7 @@ production run. You already have the software; this is everything else.
 | 3 | **DS3231 RTC module** (with CR2032) | 1 | $3–6 | Keeps the date offline across deep sleep. |
 | 4 | Dupont jumper wires (F-F, assorted) | 1 pack | $4 | Panel HAT → ESP32 for bring-up. |
 | 5 | Half-size breadboard (optional) | 1 | $4 | For first wiring test. |
-| 6 | USB cable to match the ESP32 board | 1 | — | Power + flashing. |
+| 6 | USB cable to match the ESP32 board | 1 | - | Power + flashing. |
 
 ## Power (portable, optional for first light)
 
@@ -30,7 +30,7 @@ production run. You already have the software; this is everything else.
 | 11 | **Crystal point** to match the well (~24×58 mm) | 1+ | $4–12 | Amethyst, clear quartz, etc. Buy a couple of sizes; adjust `crystal_*` in the SCAD to fit. |
 | 12 | Warm-white LED (3 mm/5 mm) or a single WS2812 | 1 | $1 | Lights the crystal from behind through the `led_hole`. |
 | 13 | 220 Ω resistor (for a plain LED) | 1 | $0.10 | Skip if using a WS2812. |
-| 14 | Small piece of frosted acrylic / diffuser film | — | $2 | Softens the glow behind the crystal. |
+| 14 | Small piece of frosted acrylic / diffuser film | - | $2 | Softens the glow behind the crystal. |
 
 ## Enclosure (3D printing)
 
@@ -43,9 +43,9 @@ production run. You already have the software; this is everything else.
 | 19 | Adhesive rubber feet | 4 | $1 | Non-slip base. |
 
 ## Print files (already generated, in `hardware/stl/`)
-- `almanac_left.stl`, `almanac_right.stl` — body halves (join at the seam)
-- `almanac_base.stl` — screwed-on bottom plate (electronics access + vents)
-- `almanac_bezel.stl` — front frame that clips over the screen
+- `almanac_left.stl`, `almanac_right.stl` - body halves (join at the seam)
+- `almanac_base.stl` - screwed-on bottom plate (electronics access + vents)
+- `almanac_bezel.stl` - front frame that clips over the screen
 
 ## Rough total
 Electronics + power + crystal + printing consumables ≈ **$60–100** for one

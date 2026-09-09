@@ -1,19 +1,24 @@
-# The Oracle — Almanac & Stone
+# The Oracle - Almanac & Stone
+
+**Status: software and hardware-design prototype.** The repository combines a deterministic Python generator, a C++ port, enclosure CAD and device-integration notes. Start with the desktop harness below before attempting a hardware build.
+
+The hero is a product-vision rendering, not evidence of a manufactured device. The ESP32 wrapper still requires the correct display driver. Message filtering is a best-effort design measure, not a formal safety guarantee.
+
 
 A personal e-ink almanac that greets you each morning with a short, warm,
-astronomically-grounded reflection. Real sky math — moon phase, zodiac signs,
-planetary retrogrades, solstices — becomes an ever-changing seed for a
+astronomically-grounded reflection. Real sky math - moon phase, zodiac signs,
+planetary retrogrades, solstices - becomes an ever-changing seed for a
 thoughtful daily message. **Reflection, never prediction.**
 
-![The Almanac & Stone device](vision.png)
+![Product-vision rendering of Almanac and Stone](vision.png)
 
-> *20 August — Moon in Gemini · Jupiter Ascending*
+> *20 August - Moon in Gemini · Jupiter Ascending*
 > *"Your mind is curious, your heart is open. Follow the threads that light you up."*
 
 The device is a small triangular desk piece: a glowing crystal in the front
 slot, gold constellations across the case, and a wide **1360×480 e-ink panel**
-showing today's date, the state of the sky, and your message. It runs fully
-**offline on an ESP32** — no network at generation time, e-ink holds the image
+showing today's date, the state of the sky, and your message. The target design runs
+**offline on an ESP32** - no network at generation time, e-ink holds the image
 at zero power between daily refreshes.
 
 ---
@@ -26,13 +31,13 @@ at zero power between daily refreshes.
   and solstice/equinox proximity.
 - **Deterministic.** The same person on the same day always gets the same
   message; different people differ. Seeded from `(date, birthdate)` with a
-  portable integer hash, so results are reproducible and testable — and
+  portable integer hash, so results are reproducible and testable - and
   identical on desktop and on the ESP32.
 - **Genuinely varied writing.** A hand-written bank of **278 fragments** across
   moon phases, planetary states, seasons, and tones, assembled into a coherent
   40–70 word paragraph with a 30-day rolling history so no two recent days
   repeat.
-- **Safe by construction.** Every message passes a content filter that rejects
+- **Content filtering.** Every message passes a content filter that rejects
   predictive-certainty, medical, financial, and legal language before display.
 
 ---
@@ -77,7 +82,7 @@ almanac/
 
 ---
 
-## Quickstart — Python
+## Quickstart - Python
 
 ```bash
 # Interactive: asks for name, birthdate, location, and a crystal
@@ -102,7 +107,7 @@ print(generate_daily_message(
     target_date=date(2026, 8, 20), name="Sam"))
 ```
 
-## Quickstart — C++ / e-ink preview
+## Quickstart - C++ / e-ink preview
 
 ```bash
 ./firmware/build_desktop.sh        # regenerate fragments + compile oracle_cpp
@@ -122,7 +127,7 @@ ESP32 build, panel wiring, and memory notes, see
 The Oracle is deliberately **not** fortune-telling. It never claims certainty
 about the future, and never gives medical, financial, or legal advice. The
 astronomical data is treated as a rich, structured, ever-changing prompt for
-warm and useful writing — closer to a stoic quote-of-the-day than a horoscope
+warm and useful writing - closer to a stoic quote-of-the-day than a horoscope
 that pretends to predict events. The crystal you choose is a personal ritual
 touch, kept clearly separate from the (real) astronomy.
 
@@ -130,12 +135,12 @@ touch, kept clearly separate from the (real) astronomy.
 
 - Retrograde tables cover **2024–2030**; extend `RETROGRADES` (Python) and the
   window tables (C++) for a longer horizon.
-- The lunar series is truncated (~0.3° accuracy) — ample for naming a phase or
+- The lunar series is truncated (~0.3° accuracy) - ample for naming a phase or
   sign except within minutes of a boundary.
 - `firmware/esp32/oracle_esp32.ino` uses a **placeholder GxEPD2 panel class**;
   swap in the exact driver for your controller before flashing.
 - `oracle_generator/fragments.py` is the single source of truth for message
-  content — never hand-edit the generated `firmware/src/oracle_fragments.h`.
+  content - never hand-edit the generated `firmware/src/oracle_fragments.h`.
 
 ## Credits
 

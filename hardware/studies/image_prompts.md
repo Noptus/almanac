@@ -1,17 +1,17 @@
-# Almanac Stone — image-generator prompt pack (shape variants)
+# Almanac Stone - image-generator prompt pack (shape variants)
 
 Paste any prompt into an image model (Midjourney, DALL·E, SDXL, Firefly…) to
 get a hero render of that variant. They share a **common style block** so the
-outputs are comparable — only the *shape sentence* changes. PNG silhouette
+outputs are comparable - only the *shape sentence* changes. PNG silhouette
 studies of the raw geometry are alongside this file (`asym.png`, `house.png`,
 `lectern.png`, `taper.png`, `trunc.png`, `tetra.png`, `iso.png`).
 
 My proposals (per your "you propose"):
-- **Crystal placement:** default to **crystal as one triangular end** — it
+- **Crystal placement:** default to **crystal as one triangular end** - it
   stops the crystal competing with the wide screen for face space and looks
   magical in profile. Two variants below place it differently for comparison.
 - **Edges:** default to **softly rounded edges + a narrow truncated top ridge**
-  for engraving — the combination that reads most premium and least "doorstop."
+  for engraving - the combination that reads most premium and least "doorstop."
 
 ---
 
@@ -29,7 +29,7 @@ Keep this identical across variants so only the **shape** differs.
 
 ---
 
-## 1 · Asymmetric wedge  *(recommended)*  — crystal as an end
+## 1 · Asymmetric wedge  *(recommended)* - crystal as an end
 `asym.png`
 
 > …a triangular-prism desk piece lying on its base, with a STEEP short back
@@ -38,7 +38,7 @@ Keep this identical across variants so only the **shape** differs.
 > glowing crystal (amethyst) lit from within; edges softly rounded; the body
 > matte black with thin brass constellation lines. …
 
-## 2 · Right-triangle lectern — crystal on a front shelf
+## 2 · Right-triangle lectern - crystal on a front shelf
 `lectern.png`
 
 > …a right-triangle prism like a small folded lectern: a VERTICAL back face and
@@ -46,7 +46,7 @@ Keep this identical across variants so only the **shape** differs.
 > ledge at the base of the screen cradles a small standing crystal point; soft
 > rounded edges; matte black body, brass star inlay on the vertical back. …
 
-## 3 · Pentagonal "house" prism — crystal on the shelf
+## 3 · Pentagonal "house" prism - crystal on the shelf
 `house.png`
 
 > …a five-sided prism: a short vertical lip at the front bottom forms a shelf,
@@ -54,7 +54,7 @@ Keep this identical across variants so only the **shape** differs.
 > vertical back; a crystal rests on the front shelf below the screen; gently
 > rounded edges; matte charcoal body with brass constellation inlay. …
 
-## 4 · Tapered prism (head & tail) — crystal at the wide end
+## 4 · Tapered prism (head & tail) - crystal at the wide end
 `taper.png`
 
 > …a triangular prism that gently TAPERS along its length, wider and taller at
@@ -62,7 +62,7 @@ Keep this identical across variants so only the **shape** differs.
 > crystal; the long sloped face carries the wide e-ink screen; rounded edges;
 > matte black with fine brass celestial lines; calm, monumental. …
 
-## 5 · Truncated-apex wedge — engraved top ridge
+## 5 · Truncated-apex wedge - engraved top ridge
 `trunc.png`
 
 > …an asymmetric triangular prism whose top ridge is sliced into a narrow FLAT
@@ -70,7 +70,7 @@ Keep this identical across variants so only the **shape** differs.
 > slope holds the wide e-ink screen; a lit crystal set into the left triangular
 > end; crisp edges softened only slightly; matte black cast body. …
 
-## 6 · Tetrahedron monument — crystal apex
+## 6 · Tetrahedron monument - crystal apex
 `tetra.png`
 
 > …a low triangular pyramid (tetrahedron) resting on a triangular base, one
@@ -93,9 +93,9 @@ Keep this identical across variants so only the **shape** differs.
    look *crafted* (wood/stone) rather than 3D-printed? does it sit like it
    belongs on a nightstand?
 3. Pick one; I'll turn that exact variant into fabrication files (laser-cut
-   panels / wood cut-sheet / resin STL — your call on material).
+   panels / wood cut-sheet / resin STL - your call on material).
 
 ## Reference to feed the model (for consistency)
 Attach `vision.png` (repo root) as a style/reference image where the tool
-supports it — it locks the matte-black + brass + crystal + wide-screen look so
+supports it - it locks the matte-black + brass + crystal + wide-screen look so
 variants stay in the same family.

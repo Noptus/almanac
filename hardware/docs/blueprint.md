@@ -1,4 +1,4 @@
-# Almanac Stone — prototype blueprint
+# Almanac Stone - prototype blueprint
 
 A 3D-printable "Toblerone" (triangular-prism) desk enclosure for the
 Waveshare 10.85" e-Paper HAT+ (G), an ESP32-WROVER, an RTC, and a lit crystal.
@@ -21,7 +21,7 @@ so the wide screen faces up toward a seated viewer.
 | Panel outline / rebate | 270.56 × 105.92 × 1.2 mm | glass drops into this recess |
 
 All dimensions are parameters at the top of
-[`scad/almanac_stone.scad`](../scad/almanac_stone.scad) — change one line and
+[`scad/almanac_stone.scad`](../scad/almanac_stone.scad) - change one line and
 re-render.
 
 ## Parts (in `hardware/stl/`)
@@ -47,7 +47,7 @@ dowel holes** align the halves; glue after test-fitting the electronics.
 - **Walls/perimeters:** 3. **Top/bottom:** 4 layers. **Infill:** 15% gyroid.
 - **Orientation:**
   - Body halves: **seam face down** on the bed (the large flat interior split
-    plane) — gives a clean outer surface and easy supports.
+    plane) - gives a clean outer surface and easy supports.
   - Base & bezel: flat, as exported.
 - **Supports:** needed inside the screen recess / FPC slot overhangs. Tree/organic
   supports work well; support-on-build-plate only where possible.
@@ -55,7 +55,7 @@ dowel holes** align the halves; glue after test-fitting the electronics.
 
 ## Assembly order
 
-1. **Test the electronics first** on the bench (see `electronics.md`) — get the
+1. **Test the electronics first** on the bench (see `electronics.md`) - get the
    Waveshare demo image showing before you commit to the enclosure.
 2. Print all four parts. Clean the seam faces and dowel holes.
 3. Dry-fit the two halves with the 3 dowels. Check the screen recess accepts the
@@ -63,7 +63,7 @@ dowel holes** align the halves; glue after test-fitting the electronics.
 4. Seat the panel from the front into its rebate; route the **FPC through the
    slot** at the lower screen edge into the interior. Attach the driver HAT.
 5. Mount the **ESP32-WROVER** and **RTC** to the base plate (double-sided tape or
-   M3 into printed bosses — add bosses in the SCAD if wanted).
+   M3 into printed bosses - add bosses in the SCAD if wanted).
 6. Fit the **LED / WS2812** behind the crystal well `led_hole`, with a scrap of
    frosted diffuser. Seat the crystal in the well.
 7. Wire per the pin table in `electronics.md`. Power via USB for first light.
@@ -72,7 +72,7 @@ dowel holes** align the halves; glue after test-fitting the electronics.
 ## Known limitation (be aware)
 
 The screen is 259.76 mm wide on a 300 mm face, leaving only ~20 mm of face
-beside it — **not enough for a large crystal next to the screen** as in the
+beside it - **not enough for a large crystal next to the screen** as in the
 marketing render. The prototype puts the crystal **well low on the front-left**,
 below the screen. For the product look (prominent side crystal), either:
 - widen the body to ~330–340 mm, or

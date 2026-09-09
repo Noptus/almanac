@@ -1,12 +1,12 @@
-# Almanac Stone — electronics & wiring (prototype)
+# Almanac Stone - electronics & wiring (prototype)
 
 ## The panel you're ordering
 
-**Waveshare 10.85" e-Paper HAT+ (G)** — 1360×480, 4-colour (Red/Yellow/Black/White),
+**Waveshare 10.85" e-Paper HAT+ (G)** - 1360×480, 4-colour (Red/Yellow/Black/White),
 SPI, with driver HAT (onboard voltage translator, 3.3V/5V MCU compatible).
 
 - Panel outline: 270.56 × 105.92 × 1.20 mm · active area 259.76 × 91.68 mm
-- Full refresh ~21 s (fast ~12 s) — normal for large colour e-ink; fine for a
+- Full refresh ~21 s (fast ~12 s) - normal for large colour e-ink; fine for a
   once-a-day almanac, not for animation.
 - Refresh power < 70 mW; standby ~0 (holds image with no power).
 
@@ -16,14 +16,14 @@ SPI, with driver HAT (onboard voltage translator, 3.3V/5V MCU compatible).
 
 ## Microcontroller
 
-**ESP32 with PSRAM** — recommended board: **ESP32-WROVER** dev board
+**ESP32 with PSRAM** - recommended board: **ESP32-WROVER** dev board
 (e.g. *ESP32-WROVER-E DevKit*, 4 MB flash + **8 MB PSRAM**) or an
 **ESP32-S3 DevKitC-1 (N8R8, 8 MB PSRAM)**.
 
 Why PSRAM: the ~160 KB colour framebuffer (and any working/scratch buffers)
 lives in SPIRAM, leaving internal SRAM for the app.
 
-## Wiring — panel HAT → ESP32 (standard Waveshare 8-wire SPI)
+## Wiring - panel HAT → ESP32 (standard Waveshare 8-wire SPI)
 
 The G-series HAT uses Waveshare's standard e-paper SPI pinout. Connect:
 
@@ -40,7 +40,7 @@ The G-series HAT uses Waveshare's standard e-paper SPI pinout. Connect:
 | PWR     | Panel power enable | GPIO 2            | some HAT revisions; tie high if absent |
 
 > Confirm the exact silk-screen labels and the PWR pin against the Waveshare
-> wiki for **10.85inch e-Paper HAT+ (G)** when the board arrives — Waveshare
+> wiki for **10.85inch e-Paper HAT+ (G)** when the board arrives - Waveshare
 > occasionally renames PWR/BUSY across revisions. The GPIOs above are a safe,
 > conflict-free default for a WROVER (avoids the PSRAM/flash pins 6–11 and the
 > input-only 34–39).
@@ -55,14 +55,14 @@ The G-series HAT uses Waveshare's standard e-paper SPI pinout. Connect:
 ## Firmware status (important)
 
 Our current firmware renders **1-bit black/white** via GxEPD2. This 4-colour
-G-panel is **not** a stock GxEPD2 model — for the prototype:
+G-panel is **not** a stock GxEPD2 model - for the prototype:
 
 1. **Fastest path:** flash **Waveshare's own `EPD_10in85g` Arduino example**
    first, confirm the panel lights and refreshes with their demo image. This
    validates wiring before touching our code.
 2. **Then integrate our reading:** render our framebuffer as black-on-white and
    push it through Waveshare's `EPD_10in85g_Display(buffer)` call. Map our
-   1-bpp buffer to their 2-bpp (black + white only) format — a thin adapter,
+   1-bpp buffer to their 2-bpp (black + white only) format - a thin adapter,
    ~30 lines. Colour (accent lines in red/yellow) can come later.
 
 > The `firmware/esp32/oracle_esp32.ino` GxEPD2 wrapper is written for a mono
